@@ -1,0 +1,31 @@
+{
+  "name": "airwave",
+  "version": "0.1.0",
+  "description": "Share Files with iOS",
+  "main": "main.js",
+  "scripts": {
+    "test": "-"
+  },
+  "repository": {
+    "type": "git",
+    "url": "-"
+  },
+  "keywords": [
+    "airwave", "airdrop", "windows"
+  ],
+  "author": "Thura Soe Win",
+  "license": "MIT",
+  "dependencies": {
+    "callback": "0.0.1",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "node-powershell": "^4.0.0",
+    "os": "^0.1.1",
+    "qrcode": "^1.4.4"
+  },
+  "devDependencies": {
+    "electron": "^7.1.7",
+    "electron-builder": "^21.2.0",
+    "electron-reload": "^1.5.0"
+  }
+}

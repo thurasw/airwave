@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>FileShare</title>
+      <link href="src/style.css" rel="stylesheet">
+   </head>
+   <body background-color="#303030">
+        <input id="close" type="image" onclick="closeBtn();" src="./src/close.png" alt="close" width="15" align="right">
+        <br>
+        <center class="waiting"><img id="spinner" class="waiting" src="./src/spinner.gif" alt="spinner" style="width:35px;height:35px;"></center>
+        <br class="waiting">
+        <center id="waitText" class="text waiting">Waiting for files..</center>
+        <br class= "waiting">
+        <center class="waiting"><img class= "qr" src='./src/qr.png' height:30 width:30 alt='qr'></center>
+        <br class="waiting">
+        <center id = "helpText" class="waiting">Scan the QR code from your phone or connect to the wifi with<br></center>
+        <script src="src/receive-src.js"></script>
+        <script>
+           const config = require('./config.json');
+           document.getElementById('helpText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
+        </script>
+   </body>
+</html>
