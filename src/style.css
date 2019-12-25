@@ -1,0 +1,86 @@
+body {
+   background-color: #161616;
+   overflow-x: hidden;
+}
+::-webkit-scrollbar {
+   width: 0px;  /* Remove scrollbar space */
+   background: transparent;  /* Optional: just make scrollbar invisible */
+}
+.main {
+   overflow-y: hidden;
+}
+.text{
+   color: white;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.button {
+    background-color: #161616;
+    color: white;
+    border: none;
+    padding: 3vw 10vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    transition-duration: 0.4s;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    vertical-align: auto;
+ }
+.button:hover{
+    background-color: #303030;
+    color: white;
+ }
+.sendBtn{
+   margin-left: 8px;
+    font-size: 5vw;
+ }
+.receiveBtn{
+    margin-right: 8px;
+    font-size: 5vw;
+    float: right;
+ }
+
+table {
+   background-color: #161616;
+   width: 320px;
+   height: 60px;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   text-align:left;
+   vertical-align: top;
+   display: inline-block;
+   padding: 6px;
+}
+table:hover {
+   background-color: #303030;
+   cursor: pointer;
+}
+.uptext	{
+   font-size:15px;
+   color: white;
+   padding-top: 6px;
+   padding-bottom: 10px;
+   padding-left:10px;
+}
+.downtext {
+   font-size:13px;
+   color: #6e6e6e;
+   padding-left: 12px;
+   margin-bottom:12px;
+}
+.fileImg {
+   padding-left: 4px;
+}
+.qr {
+   border: 5px solid rgb(65, 64, 64);
+}
+#helpText {
+   color:rgb(104, 104, 104);
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   margin-left: 20px;
+   margin-right: 10px;
+   font-size: small;
+   float: left;
+   text-align: left;
+}
