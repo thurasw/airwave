@@ -77,7 +77,7 @@ const createWindow = () => {
         }
     });
     window.loadURL(`file://${__dirname}/index.html`);
-    //window.webContents.openDevTools();
+    window.webContents.openDevTools();
 }
 
 const createTray = () => {
@@ -125,8 +125,8 @@ function turnOnHotspot()
 {   
     var stdout;
     function callback(stdout) {
-        if (stdout.includes("Success")== true){
-                console.log('nice');
+        console.log(stdout)
+        if (stdout.includes("Success")== true) {
             }
         else {
             dialog.showMessageBox(null, {
@@ -161,8 +161,19 @@ ipc.on('receive-file', function(event, data)
     receiveBrowser();
 });
 
-function inProgress(filedata)
+ipc.on('cancel', function(event, data) {
+    receive.stopMulter();
+    receive.cancel();
+    receive.startMulter();
+});
+
+function received(filedata)
 {
+    window.webContents.send('received', filedata);
+}
+exports.received = received;
+
+function inProgress(filedata) {
     window.webContents.send('inProgress', filedata);
 }
 exports.inProgress = inProgress;

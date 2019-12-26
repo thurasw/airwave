@@ -32,25 +32,37 @@ body {
     background-color: #303030;
     color: white;
  }
-.sendBtn{
+#btnSend{
    margin-left: 8px;
     font-size: 5vw;
  }
-.receiveBtn{
+#btnRcv{
     margin-right: 8px;
     font-size: 5vw;
     float: right;
  }
-
+#btnCancel {
+   display: none;
+   float: left;
+   vertical-align: top;
+   margin-top: 2px;
+}
+#btnClose {
+   float: right;
+   vertical-align: top;
+   margin-top: 2px;
+}
 table {
    background-color: #161616;
-   width: 320px;
+   width: 270px;
    height: 60px;
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    text-align:left;
    vertical-align: top;
    display: inline-block;
    padding: 6px;
+   white-space: nowrap;
+   overflow: hidden;
 }
 table:hover {
    background-color: #303030;
@@ -67,12 +79,23 @@ table:hover {
    font-size:13px;
    color: #6e6e6e;
    padding-left: 12px;
-   margin-bottom:12px;
+   padding-bottom:12px;
 }
+@keyframes text-scrolling {
+   0% {
+     transform: translateX(5%)
+   }
+   50% {
+      transform: translateX(-50%)
+   }
+   100% {
+     transform: translateX(5%)
+   }
+ }
 .fileImg {
    padding-left: 4px;
 }
-.qr {
+#qr {
    border: 5px solid rgb(65, 64, 64);
 }
 #helpText {
@@ -83,4 +106,10 @@ table:hover {
    font-size: small;
    float: left;
    text-align: left;
+}
+.waiting {
+   text-align: center;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
 }

@@ -4,6 +4,8 @@ const multer = require('multer');
 const app = express();
 const os = require('os');
 const path = require('path');
+
+const main = require('./main.js');
 var server;
 
 var config = require('../config.json');
@@ -31,19 +33,30 @@ var upload = multer({
   storage: storage,
 })
 
-app.post('/uploadfile', upload.single('single'),(req, res, next) => {
-    const main = require('./main.js');
-    var filedata = [req.file.originalname, req.get('hostname'), req.file.size, req.file.path];
-    main.inProgress(filedata);
-    const file = req.file
-    if (!file) {
-      const error = new Error('Please upload a file')
-      error.httpStatusCode = 400
-      return next(error)
-    }
-      res.send(file)
-    
-  })
+function beforeUpload(req, res, next) {
+  var filedata = [req.get('filename'), req.get('hostname'), req.get('Content-Length')];
+  main.inProgress(filedata);
+  function cancel() {
+    res.sendStatus(500);
+  }
+  exports.cancel = cancel;
+  next();
+}
+
+function afterUpload(req, res, next) { 
+  var filedata = [req.file.originalname, req.get('hostname'), req.file.size, req.file.path];
+  main.received(filedata);
+  const file = req.file
+  if (!file) {
+    const error = new Error('Please upload a file')
+    error.httpStatusCode = 400
+    return next(error)
+  }
+  res.send(file)
+  next();
+}
+
+app.post('/uploadfile', [beforeUpload, upload.single('single'), afterUpload]);
 
 function startMulter()
 {
@@ -54,5 +67,6 @@ function stopMulter()
 {
   server.close(function() {});
 }
+
 exports.startMulter = startMulter;
 exports.stopMulter = stopMulter; 
