@@ -1,17 +1,34 @@
 {
   "name": "airwave",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Share Files with iOS",
   "main": "main.js",
   "scripts": {
-    "test": "-"
+    "start": "electron main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
+  "build": {
+    "directories": {
+    "output": "build"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icon.ico"
+    },
+    "extraResources": [{ 
+      "from": "extra/"
+    }]
+  },
+
   "repository": {
     "type": "git",
-    "url": "-"
+    "url": "git:+https://github.com/thura10/airwave.git"
   },
   "keywords": [
-    "airwave", "airdrop", "windows"
+    "airwave",
+    "airdrop",
+    "windows"
   ],
   "author": "Thura Soe Win",
   "license": "MIT",

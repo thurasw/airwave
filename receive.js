@@ -3,15 +3,16 @@ const bodyParser= require('body-parser');
 const multer = require('multer');
 const app = express();
 const os = require('os');
+const path = require('path');
 var server;
 
-var config = require('./config.json');
-var save = config.SaveDirectory;
+var config = require('../config.json');
+var save = config.saveDirectory;
 
 app.use(bodyParser.urlencoded({extended: true}))
 
 if (save == 'default'){
-  dir = os.homedir().concat('\\Desktop');
+  dir = path.join(os.homedir(), '/Desktop');
 }
 else{
   dir = config.SaveDirectory;
@@ -26,7 +27,9 @@ var storage = multer.diskStorage({
     }
 })
 
-var upload = multer({ storage: storage, })
+var upload = multer({ 
+  storage: storage,
+})
 
 app.post('/uploadfile', upload.single('single'),(req, res, next) => {
     const main = require('./main.js');

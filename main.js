@@ -1,23 +1,22 @@
-const { app, Menu, Tray, screen, shell, BrowserWindow} = require('electron');
+const { app, Menu, Tray, screen, shell, BrowserWindow, dialog} = require('electron');
 const ipc = require('electron').ipcMain;
 const path = require('path');
 const exec = require('child_process').exec;
 const qr = require('qrcode');
 var receive = require('./receive.js');
 var fs = require('fs');
-require('electron-reload')(__dirname);
 
-var config = require('./config.json');
+var config = require('../config.json');
 var save = config.SaveDirectory;
 var ssid = config.ssid;
 var password = config.password;
-
+var legacy = config.legacyMode;
 var dirty = false;
 let tray = undefined
 let window = undefined
 
 function generateQr() {
-    var filepath = `${__dirname}/src/qr.png`
+    var filepath = path.join(__dirname, "../qr.png")
     if (fs.existsSync(filepath)) {
         fs.unlink(filepath, (err) => {
             if (err) {
@@ -27,7 +26,7 @@ function generateQr() {
             }
             console.log("File succesfully deleted");
         });
-    qr.toFile('./src/qr.png', `WIFI:T:WPA;S:${ssid};P:${password};;`);
+    qr.toFile(path.join(__dirname, "../qr.png"), `WIFI:T:WPA;S:${ssid};P:${password};;`);
     }
 }
 
@@ -86,12 +85,12 @@ const createTray = () => {
     const contextMenu = Menu.buildFromTemplate([
         { label: 'Config..', type: 'normal', 
             click() {
-                shell.openItem(`${__dirname}/config.json`)
+                shell.openItem(path.join(__dirname, "../config.json"))
             } 
         },
         { label: 'README', type: 'normal', 
             click() {
-                shell.openItem(`${__dirname}/info.txt`)
+                shell.openItem(path.join(__dirname, "../readme.txt"))
             } 
         },
         { label: 'Regenerate QR', type: 'normal', 
@@ -99,8 +98,11 @@ const createTray = () => {
                 generateQr();
             } 
         },
-        { label: 'Donate! :)', type: 'normal', role: '' },
-        { label: 'Reload', type: 'normal', role: 'forceReload' },
+        { label: 'Donate! :)', type: 'normal',
+            click() {
+                shell.openExternal('https://paypal.me/thurasw')
+            }
+        },
         { label: 'Exit', type: 'normal', role: 'quit' }
       ])
     tray.setToolTip('Share or Receive files from iOS.')
@@ -117,15 +119,38 @@ const toggleWindow = () => {
 }
 
 function execute(command, callback) {
-    exec(command);
+    exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
 function turnOnHotspot()
-{
-    execute(`powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList '/c cd c:\ && netsh wlan stop hostednetwork && NETSH WLAN set hostednetwork mode=allow ssid=${ssid} key=${password} && netsh wlan start hostednetwork'"`)
-}
+{   
+    var stdout;
+    function callback(stdout) {
+        if (stdout.includes("Success")== true){
+                console.log('nice');
+            }
+        else {
+            dialog.showMessageBox(null, {
+                title: 'Error turning on Mobile Hotspot',
+                message: 'An error occurred while trying to turn on Mobile Hotspot.',
+                detail: 'This is most likely due to your PC not being connected to any WiFi Network. You can try turning on Legacy Mode in config to continue without WiFi, although this is slower and not supported in some PCs'
+            })
+        }
+    }
+    if (legacy == 'false'){
+        execute(`powershell -ExecutionPolicy Bypass -File ${path.join(__dirname, "../hotspotOn.ps1")}`, callback);
+    }
+    else {
+        execute(`powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList '/c cd c:\ && netsh wlan stop hostednetwork && NETSH WLAN set hostednetwork mode=allow ssid=${ssid} key=${password} && netsh wlan start hostednetwork'"`, console.log)
+    }
+}  
 function turnOffHotspot()
-{  
-    execute(`netsh wlan stop hostednetwork`)
+{
+    if (legacy == 'false'){
+        execute(`powershell -ExecutionPolicy Bypass -File ${path.join(__dirname, "../hotspotOff.ps1")}`, console.log)
+    }
+    else{
+        execute(`netsh wlan stop hostednetwork`, console.log);
+    }
 }
 
 ipc.on('receive-file', function(event, data)
