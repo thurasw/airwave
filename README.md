@@ -5,6 +5,8 @@ Share Files between iOS and Windows without hassle.
 Airwave is a simple electron app to transfer files between iOS and Windows. It is made as simple as I could. It uses node.js, electron, express and multer to handle all this.
 [Feel free to donate. I won't cry about it.](https://paypal.me/thurasw)
 
+[Link to shortcut](https://www.icloud.com/shortcuts/bd8a5eee844b4e709f6d26530ef68382)
+
 # Before you use
 The app comes default using Window 10's Mobile Hotspot. As of moment, the program can't change the SSID and password of Mobile Hotspot so you will have to change it yourself. You can still open the config and update the WiFi details to regenerate the QR for the scan.
 
