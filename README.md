@@ -30,5 +30,4 @@ Show percentage of file being uploaded\
 Authenticate user before accepting uploads\
 Sending\
 Auto-update SSID and password of Mobile Hotspot\
-option to minimize the UI while sending or receiving\
 Add Local Mode (Use your home WiFi and send files through router). Still technically doable now but have plans to make it easier.\
