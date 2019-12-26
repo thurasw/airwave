@@ -77,7 +77,7 @@ const createWindow = () => {
         }
     });
     window.loadURL(`file://${__dirname}/index.html`);
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
 }
 
 const createTray = () => {
@@ -158,13 +158,27 @@ ipc.on('receive-file', function(event, data)
     dirty = true;
     turnOnHotspot();
     receive.startMulter();
-    receiveBrowser();
+    bigBrowser();
+    window.loadURL(`file://${__dirname}/receive.html`);
 });
 
 ipc.on('cancel', function(event, data) {
     receive.stopMulter();
     receive.cancel();
     receive.startMulter();
+});
+
+ipc.on('minimize', function(event, data) {
+    smallBrowser(100);
+})
+
+ipc.on('maximize', function(event, data) {
+    bigBrowser();
+})
+
+ipc.on('cleanup', function(event, data)
+{
+    cleanup();
 });
 
 function received(filedata)
@@ -178,25 +192,25 @@ function inProgress(filedata) {
 }
 exports.inProgress = inProgress;
 
-function receiveBrowser()
+function bigBrowser()
 {
     window.setSize(300, 400, true);
     adjustWindow();
-    window.loadURL(`file://${__dirname}/receive.html`);
+}
+
+function smallBrowser(height)
+{
+    window.setMinimumSize(300, height);
+    window.setSize(300, height, true);
+    adjustWindow();
 }
 
 function cleanup()
 {
+    smallBrowser(55);
     turnOffHotspot();
-    window.setMinimumSize(300, 55);
     window.loadURL(`file://${__dirname}/index.html`);
-    window.setSize(300, 55, true);
     adjustWindow();
     receive.stopMulter();
     dirty = false;
 }
-
-ipc.on('cleanup', function(event, data)
-{
-    cleanup();
-});

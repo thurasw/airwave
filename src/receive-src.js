@@ -17,19 +17,23 @@ function cancelBtn()
 
 function minimizeBtn()
 {
-    //WIP
+    ipc.send('minimize', {});
+    var minimize = document.getElementById('btnMin');
+    minimize.setAttribute("src", "./src/up.png")
+    minimize.setAttribute("onclick", "maximizeBtn();")
 }
 
-function waitToProgress()
+function maximizeBtn()
 {
-    document.getElementById('waiting').style.display = "none";
-    //WIP//var close= document.getElementById('close');
-    //WIP//close.setAttribute("src", "./src/down.png");
-    //WIP//close.setAttribute("onclick", "minimizeBtn();");
+    ipc.send('maximize', {});
+    var maximize = document.getElementById('btnMin');
+    maximize.setAttribute("src", "./src/down.png")
+    maximize.setAttribute("onclick", "minimizeBtn();")
 }
 
 ipc.on('inProgress', (event, filedata) => {
-    waitToProgress ();
+    document.getElementById('waiting').style.display = "none";
+    document.getElementById('btnClose').style.display = "none";
     document.getElementById('btnCancel').style.display = "inline";
     var hostname = "from ".concat(filedata[1]);
     var size = formatBytes(filedata[2]);
@@ -37,6 +41,7 @@ ipc.on('inProgress', (event, filedata) => {
 })
 
 ipc.on('received', (event, filedata) => {
+    document.getElementById('btnClose').style.display = "inline";
     document.getElementById('btnCancel').style.display = "none";
     document.getElementById('divInProgress').removeChild(document.getElementById('inProgress'));
     var parts = filedata[3].split('\\');

@@ -37,7 +37,7 @@ function beforeUpload(req, res, next) {
   var filedata = [req.get('filename'), req.get('hostname'), req.get('Content-Length')];
   main.inProgress(filedata);
   function cancel() {
-    res.sendStatus(500);
+    res.status(404).send('The transfer was cancelled!');
   }
   exports.cancel = cancel;
   next();
@@ -52,7 +52,7 @@ function afterUpload(req, res, next) {
     error.httpStatusCode = 400
     return next(error)
   }
-  res.send(file)
+  //res.send(file)
   next();
 }
 
