@@ -13,3 +13,14 @@ iOS is pretty hesitant to connect to wifi networks without an internet connectio
 This will share the internet from your main WiFi to the hotspot wifi although it worked fine without internet sharing sometimes.
 
 Last but not least, using netsh to start hotspot require admin privilleges and that's why you will get a prompt for that.
+In 0.0.2, you have the option to use Mobile Hotspot feature of Windows or the netsh. The first one doesn't require any admin priveleges anymore but you need to be connected to a Wifi network for that.
+
+The SSID and password you set in config will not be reflected for Mobile Hotspot. You will have to change it manually in settings. But you can still change it in config and regenerate QR code for an updated QR.
+
+To-do:
+Show progress of file as it's being uploaded
+Authenticate user before accepting uploads
+Sending
+Auto-update SSID and password of Mobile Hotspot
+option to minimize the UI while sending or receiving
+Add Local Mode (Use your home WiFi and send files through router). Still technically doable now but have plans to make it easier.
