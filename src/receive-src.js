@@ -2,12 +2,12 @@ const ipc = require('electron').ipcRenderer;
 
 function closeBtn()
 {
-    ipc.send('cleanup', {});
+    ipc.send('cleanupRcv', {});
 }
 
 function cancelBtn()
 {
-    ipc.send('cancel', {});
+    ipc.send('cancelRcv', {});
     document.getElementById('divInProgress').removeChild(document.getElementById('inProgress'));
     document.getElementById('btnCancel').style.display = "none";
     if (document.getElementsByClassName('received').length == 0) {
@@ -19,7 +19,7 @@ function minimizeBtn()
 {
     ipc.send('minimize', {});
     var minimize = document.getElementById('btnMin');
-    minimize.setAttribute("src", "./src/up.png")
+    minimize.setAttribute("src", "./res/up.png")
     minimize.setAttribute("onclick", "maximizeBtn();")
 }
 
@@ -27,28 +27,28 @@ function maximizeBtn()
 {
     ipc.send('maximize', {});
     var maximize = document.getElementById('btnMin');
-    maximize.setAttribute("src", "./src/down.png")
+    maximize.setAttribute("src", "./res/down.png")
     maximize.setAttribute("onclick", "minimizeBtn();")
 }
 
 ipc.on('inProgress', (event, filedata) => {
     document.getElementById('waiting').style.display = "none";
     document.getElementById('btnClose').style.display = "none";
-    document.getElementById('btnCancel').style.display = "inline";
+    document.getElementById('btnCancel').style.display = "inline-block";
     var hostname = "from ".concat(filedata[1]);
     var size = formatBytes(filedata[2]);
-    document.getElementById('divInProgress').innerHTML += `<table title="Receiving.." id="inProgress" class="inProgress" ><tr><td><img class="fileImg" src="./src/spinner.gif" width="20" height="20"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>`;
+    document.getElementById('divInProgress').innerHTML += `<table title="Receiving.." id="inProgress" class="inProgress" ><tr><td><img class="fileImg" src="./res/spinner.gif" width="20" height="20"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>`;
 })
 
 ipc.on('received', (event, filedata) => {
-    document.getElementById('btnClose').style.display = "inline";
+    document.getElementById('btnClose').style.display = "inline-block";
     document.getElementById('btnCancel').style.display = "none";
     document.getElementById('divInProgress').removeChild(document.getElementById('inProgress'));
     var parts = filedata[3].split('\\');
     filePath = parts.join('\\\\');
     var hostname = "from ".concat(filedata[1]);
     var size = formatBytes(filedata[2]);
-    document.getElementById('divReceived').innerHTML = `<table title="Open in Folder" class="received" onclick="openInFolder('${filePath}');"><tr><td><img class="fileImg" src="./src/file.png" width="25" height="25"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>` + document.getElementById('divReceived').innerHTML;
+    document.getElementById('divReceived').innerHTML = `<table title="Open in Folder" class="received" onclick="openInFolder('${filePath}');"><tr><td><img class="fileImg" src="./res/file.png" width="25" height="25"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>` + document.getElementById('divReceived').innerHTML;
 })
 
 function openInFolder(path)

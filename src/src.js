@@ -2,10 +2,10 @@ const ipc = require('electron').ipcRenderer;
 
 document.getElementById('btnRcv').addEventListener('click', () =>
 {
-    ipc.send('receive-file', {})
+    ipc.send('receiveBtn', {})
 })
 
 document.getElementById('btnSend').addEventListener('click', () =>
 {
-    ipc.send('send-file', {})
+    ipc.send('sendBtn', {})
 })

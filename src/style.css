@@ -1,6 +1,12 @@
+html {
+   margin: 0;
+   height: 100%;
+}
 body {
    background-color: #161616;
    overflow-x: hidden;
+   margin: 0;
+   height: 100%;
 }
 ::-webkit-scrollbar {
    width: 0px;  /* Remove scrollbar space */
@@ -22,8 +28,8 @@ body {
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
-    margin-top: 1px;
-    margin-bottom: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     transition-duration: 0.4s;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     vertical-align: auto;
@@ -33,29 +39,28 @@ body {
     color: white;
  }
 #btnSend{
-   margin-left: 8px;
-    font-size: 5vw;
+   margin-left:15px;
+   font-size: 5vw;
  }
 #btnRcv{
-    margin-right: 8px;
-    font-size: 5vw;
-    float: right;
+   margin-right: 15px;
+   font-size: 5vw;
+   float: right;
  }
 #btnCancel {
    display: none;
-   float: left;
    vertical-align: top;
    background-color: #161616;
    color: white;
    border: none;
-   padding: 1vw 10vw;
+   padding: 3vw 10vw;
    text-align: center;
    cursor: pointer;
-   margin-top: 1px;
+   margin-top: 0px;
    margin-bottom: 1px;
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    position: sticky;
-   top: 10px;
+   top: 0px;
 }
 #btnCancel:hover {
    background-color: #303030;
@@ -65,6 +70,8 @@ body {
    float: right;
    vertical-align: top;
    margin-top: 4px;
+   margin-right:10px;
+   margin-bottom:15px;
    position: sticky;
    top: 10px;
 }
@@ -73,18 +80,22 @@ body {
    vertical-align: top;
    margin-top: 4px;
    margin-right: 15px;
+   margin-bottom: 15px;
    position: sticky;
    top: 10px;
 }
+#spinner {
+   float: center;
+}
 table {
    background-color: #161616;
-   width: 270px;
+   width: 300px;
    height: 60px;
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    text-align:left;
    vertical-align: top;
    display: inline-block;
-   padding: 6px;
+   padding: 4px;
    white-space: nowrap;
    overflow: hidden;
 }
@@ -130,10 +141,103 @@ table:hover {
    font-size: small;
    float: left;
    text-align: left;
+   margin-top: 6px;
 }
 .waiting {
    text-align: center;
    display: block;
    margin-left: auto;
    margin-right: auto;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#spinner {
+   width: 36px;
+   height: 36px;
+   margin-right: 90px;
+   margin-left: 125px;
+   margin-top: 10px;
+}
+#addFile {
+   width: 120px;
+   height: 120px;
+   margin-left: auto;
+   margin-right: auto;
+}
+#dragText {
+   color: #808080;
+   font-size: 5vw;
+   margin-top: 25px;
+   margin-bottom: 4px;
+}
+#fileSelectText {
+   color: rgb(0, 153, 255);
+   margin-top: 4px;
+   font-size: 5vw;
+   cursor: pointer;
+}
+#fileSend {
+   background-color: #007AFF;
+   width: 290px;
+   color: white;
+   border-radius: 10px;
+   padding: 4vw 10vw;
+   font-size: 16px;
+   margin-left: auto;
+   margin-right:auto;
+   margin-bottom: 4px;
+   margin-top: 4px;
+   display: none;
+   float: center;
+   position: sticky;
+   bottom: 10px;
+   border: none;
+}
+#fileSend:hover {
+   background-color: #156ecf;
+   color: white;
+ }
+ #fileSendDiv {
+    position: fixed;
+    left: 5px;
+    right: 5px;
+    bottom: 1px;
+ }
+
+#removeText {
+   float:left; 
+   color: #808080;
+   margin-left:15px; 
+   margin-top:10px;
+   font-size: small;
+   display: none;
+}
+.inProgress {
+   display: block;
+   padding-top: 20px;
+   padding-bottom:15px;
+   padding-left: 25px;
+   padding-right: 25px;
+   background-color: #161616;
+   margin-top: 1px;
+}
+.inProgress:hover {
+  background-color: #303030
+}
+.progressBar {
+  background-color: #007AFF;
+   height: 3px;
+   width: 1%;
+   display: block;
+}
+.progressText {
+   display: list-item;
+  float: right;
+}
+.barBg {
+  background-color: #303030;
+   height: 3px;
+   width: 100%;
+   display: block;
+   margin-top: 25px;
+   margin-bottom: 10px;
 }

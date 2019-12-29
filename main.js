@@ -1,13 +1,9 @@
-const { app, Menu, Tray, screen, shell, BrowserWindow, dialog} = require('electron');
+const { app, Menu, Tray, screen, shell, BrowserWindow, dialog, remote} = require('electron');
 const ipc = require('electron').ipcMain;
 const path = require('path');
 const exec = require('child_process').exec;
-const qr = require('qrcode');
-var receive = require('./receive.js');
-var fs = require('fs');
 
 var config = require('../config.json');
-var save = config.SaveDirectory;
 var ssid = config.ssid;
 var password = config.password;
 var legacy = config.legacyMode;
@@ -16,6 +12,8 @@ let tray = undefined
 let window = undefined
 
 function generateQr() {
+    const qr = require('qrcode');
+    var fs = require('fs');
     var filepath = path.join(__dirname, "../qr.png")
     if (fs.existsSync(filepath)) {
         fs.unlink(filepath, (err) => {
@@ -33,7 +31,6 @@ function generateQr() {
 app.on('ready', () => {
     createWindow();
     createTray();
-    exports.window= window;
 })
 
 function adjustWindow()
@@ -43,8 +40,8 @@ function adjustWindow()
 }
 
 const showWindow = () => {
-    window.show();
     adjustWindow();
+    window.show();
 }
 
 const getWindowPosition = () => {
@@ -77,11 +74,11 @@ const createWindow = () => {
         }
     });
     window.loadURL(`file://${__dirname}/index.html`);
-    //window.webContents.openDevTools();
+    window.webContents.openDevTools();
 }
 
 const createTray = () => {
-    tray = new Tray(`${__dirname}\\src\\icon.ico`);
+    tray = new Tray(`${__dirname}\\res\\icon.ico`);
     const contextMenu = Menu.buildFromTemplate([
         { label: 'Config..', type: 'normal', 
             click() {
@@ -115,7 +112,12 @@ const createTray = () => {
 }
 
 const toggleWindow = () => {
-    window.isVisible() ? window.hide() : showWindow();
+    if (window.isVisible() == true) {
+        window.hide();
+    }
+    else {
+        showWindow();
+    }
 }
 
 function execute(command, callback) {
@@ -153,8 +155,9 @@ function turnOffHotspot()
     }
 }
 
-ipc.on('receive-file', function(event, data)
+ipc.on('receiveBtn', function(event, data)
 {
+    var receive = require('./receive.js');
     dirty = true;
     turnOnHotspot();
     receive.startMulter();
@@ -162,7 +165,8 @@ ipc.on('receive-file', function(event, data)
     window.loadURL(`file://${__dirname}/receive.html`);
 });
 
-ipc.on('cancel', function(event, data) {
+ipc.on('cancelRcv', function(event, data) {
+    var receive = require('./receive.js');
     receive.stopMulter();
     receive.cancel();
     receive.startMulter();
@@ -176,9 +180,15 @@ ipc.on('maximize', function(event, data) {
     bigBrowser();
 })
 
-ipc.on('cleanup', function(event, data)
+ipc.on('cleanupRcv', function(event, data)
 {
-    cleanup();
+    var receive = require('./receive.js');
+    smallBrowser(55);
+    turnOffHotspot();
+    window.loadURL(`file://${__dirname}/index.html`);
+    adjustWindow();
+    receive.stopMulter();
+    dirty = false;
 });
 
 function received(filedata)
@@ -205,12 +215,34 @@ function smallBrowser(height)
     adjustWindow();
 }
 
-function cleanup()
-{
+ipc.on('sendBtn', function(event, message) {
+    dirty = true;
+    bigBrowser();
+    window.loadURL(`file://${__dirname}/fileSelect.html`);
+})
+
+ipc.on('fileSend', function(event, filedata) {
+    //turnOnHotspot();
+    var send= require('./send.js');
+    send.startSend(filedata);
+    window.loadURL(`file://${__dirname}/send.html`);
+})
+
+ipc.on('cleanupSend', function(event, message) {
+    //turnOffHotspot();
+    var send = require('./send.js');
+    send.stopSend();
     smallBrowser(55);
-    turnOffHotspot();
     window.loadURL(`file://${__dirname}/index.html`);
     adjustWindow();
-    receive.stopMulter();
     dirty = false;
+})
+
+function startSending(message) {
+    window.webContents.send('startSending', message);
 }
+function sendUpdate(message) {
+    window.webContents.send('sendUpdate', message);
+}
+exports.startSending = startSending;
+exports.sendUpdate = sendUpdate;

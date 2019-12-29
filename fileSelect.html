@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>FileShare</title>
+      <link href="src/style.css" rel="stylesheet">
+   </head>
+   <body id="drag-file" dropzone="link" background-color="#303030">
+    <input id="btnClose" type="image" onclick="closeBtn();" src="./res/close.png" alt="close" width="15">
+    <input id="btnMin" type="image" onclick="minimizeBtn();" src="./res/down.png" alt="minimize" width="15">
+    <p id="removeText" class="text">Double click to remove items.</p>
+        <div id="waiting">
+            <br><br><br><br>
+            <img src="res/addFile.png" id="addFile" class="waiting" alt="addFile">
+            <p class="waiting" id="dragText">Drag and drop files here or</p>
+            <p class="waiting" id="fileSelectText" onclick="fileDialog();">select files using File Selector.</p>
+        </div>
+        <div id='fileList'></div>
+        <div id='fileSendDiv'>
+            <button id="fileSend" onclick="fileSend();">Send File(s)</button>
+        </div>
+        <script src="src/file-src.js"></script>
+   </body  >
+</html>
