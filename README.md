@@ -1,33 +1,29 @@
 # airwave
 Share Files between iOS and Windows without hassle.
 
-
 Airwave is a simple electron app to transfer files between iOS and Windows. It is made as simple as I could. It uses node.js, electron, express and multer to handle all this.
 [Feel free to donate. I won't cry about it.](https://paypal.me/thurasw)
 
-[Link to shortcut](https://www.icloud.com/shortcuts/bd8a5eee844b4e709f6d26530ef68382)
+Download the shortcuts:
+[Send - Over LAN](https://www.icloud.com/shortcuts/e6eba5b155d14377a5382f029d0ad1c1)
+[Receive - Over LAN](https://www.icloud.com/shortcuts/9fda4fe76267411da227c6c711256abf)
+[Send - Using Hotspot](https://www.icloud.com/shortcuts/8503fa691f2f4affbb67e2f705462e87)
+[Receive - Using Hotspot](https://www.icloud.com/shortcuts/35c2c52d681d41c596f5448b1bc1598c)
 
 # Before you use
-The app comes default using Window 10's Mobile Hotspot. As of moment, the program can't change the SSID and password of Mobile Hotspot so you will have to change it yourself. You can still open the config and update the WiFi details to regenerate the QR for the scan.
 
-If the shorcut says "You're offline" or anything similar, chances are your phone isn't connected to the Wifi yet. Give it some more time.
-
-The shortcut can be run separately, in which case, you will be asked to pick from a file picker or it can be run from the share sheet from photos, pdfs and files too.
-
-There's two different modes the normal mode and the legacy mode.
-
-Legacy Mode has some problems.
-
-1.It can't be used on many newer devices.
+1. Every time you update the SSID of Hotspot in config, you must regenerate QR, restart the app and make appropriate changes in the shortcuts.
 
 2. iOS is pretty hesitant to connect to wifi networks without an internet connection so you might wanna go to Control Panel -> Network and Internet -> Network and Sharing Center -> Change adapter settings -> (Your actual Wifi Adapter **not hosted network**) -> Properties -> Sharing -> Allow other network users to connect through ...
-This will share the internet from your main WiFi to the hotspot wifi although it worked fine without internet sharing sometimes.
+This will share the internet from your main WiFi to the hotspot wifi and your phone will connect to the hotspot 2x 3x quicker.
 
-**BUT YOU NEED TO BE CONNECTED TO A WIFI TO USE NORMAL MODE** so legacy mode might come in handy as well.
+3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw)
+
+3. On a real note, it's very self-explanatory. Very user-friendly. Just try not to mess up the file format of the config.
+
+4. When editing the save directory in config, you have to use double slashes. For example, to point to the desktop, you would have to do 
+(C:\\Users\\username\\Desktop) instead of just one backslash. And don't forget quotes. Speaking of which, default means the desktop.
 
 To-do:\
 Show percentage of file being uploaded\
 Authenticate user before accepting uploads\
-Sending\
-Auto-update SSID and password of Mobile Hotspot\
-Add Local Mode (Use your home WiFi and send files through router). Still technically doable now but have plans to make it easier.\
