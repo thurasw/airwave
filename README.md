@@ -4,11 +4,13 @@ Share Files between iOS and Windows without hassle.
 Airwave is a simple electron app to transfer files between iOS and Windows. It is made as simple as I could. It uses node.js, electron, express and multer to handle all this.
 [Feel free to donate. I won't cry about it.](https://paypal.me/thurasw)
 
-Download the shortcuts:
-[Send - Over LAN](https://www.icloud.com/shortcuts/e6eba5b155d14377a5382f029d0ad1c1)
-[Receive - Over LAN](https://www.icloud.com/shortcuts/9fda4fe76267411da227c6c711256abf)
-[Send - Using Hotspot](https://www.icloud.com/shortcuts/8503fa691f2f4affbb67e2f705462e87)
-[Receive - Using Hotspot](https://www.icloud.com/shortcuts/35c2c52d681d41c596f5448b1bc1598c)
+Download the shortcuts:  
+
+
+[Send - Over LAN](https://www.icloud.com/shortcuts/e6eba5b155d14377a5382f029d0ad1c1)  
+[Receive - Over LAN](https://www.icloud.com/shortcuts/9fda4fe76267411da227c6c711256abf)  
+[Send - Using Hotspot](https://www.icloud.com/shortcuts/8503fa691f2f4affbb67e2f705462e87)  
+[Receive - Using Hotspot](https://www.icloud.com/shortcuts/35c2c52d681d41c596f5448b1bc1598c)  
 
 # Before you use
 
