@@ -8,8 +8,8 @@ var ssid = config.ssid;
 var password = config.password;
 var legacy = config.legacyMode;
 var dirty = false;
-let tray = undefined
-let window = undefined
+let tray = undefined;
+let window = undefined;
 
 function generateQr() {
     const qr = require('qrcode');
@@ -22,7 +22,6 @@ function generateQr() {
                 console.log(err);
                 return;
             }
-            console.log("File succesfully deleted");
         });
     qr.toFile(path.join(__dirname, "../qr.png"), `WIFI:T:WPA;S:${ssid};P:${password};;`);
     }
@@ -74,7 +73,7 @@ const createWindow = () => {
         }
     });
     window.loadURL(`file://${__dirname}/index.html`);
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
 }
 
 const createTray = () => {
@@ -123,43 +122,61 @@ const toggleWindow = () => {
 function execute(command, callback) {
     exec(command, function(error, stdout, stderr){ callback(stdout); });
 };
+var wifi;
 function turnOnHotspot()
 {   
-    var stdout;
-    function callback(stdout) {
-        console.log(stdout)
-        if (stdout.includes("Success")== true) {
+    if (legacy == 'false') {
+        var fs = require('fs');
+        var wifiPath = path.join(__dirname, "../ssid");
+        var pwPath = path.join(__dirname, "../pass");
+        /*if (fs.existsSync(wifiPath)) {
+            fs.unlink(wifiPath);
+        };
+        if (fs.existsSync(pwPath)) {
+            fs.unlink(pwPath);
+        };  */
+        fs.writeFile(path.join(__dirname, "../ssid"), `${ssid}`, function (err) {
+            if (err) throw err;
+            console.log('File is created successfully.');
+        });
+        fs.writeFile(path.join(__dirname, "../pass"), `${password}`, function (err) {
+            if (err) throw err;
+            console.log('File is created successfully.');
+        });
+        const { exec } = require('child_process');
+        wifi = exec('wifi.exe',{ cwd: `${path.join(__dirname, '..')}`}, (error, stdout, stderr) => {
+            if (error) {
+                console.error(error);
+                return;
             }
-        else {
-            dialog.showMessageBox(null, {
-                title: 'Error turning on Mobile Hotspot',
-                message: 'An error occurred while trying to turn on Mobile Hotspot.',
-                detail: 'This is most likely due to your PC not being connected to any WiFi Network. You can try turning on Legacy Mode in config to continue without WiFi, although this is slower and not supported in some PCs'
-            })
-        }
-    }
-    if (legacy == 'false'){
-        execute(`powershell -ExecutionPolicy Bypass -File ${path.join(__dirname, "../hotspotOn.ps1")}`, callback);
+        console.log(stdout);
+        });
     }
     else {
         execute(`powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList '/c cd c:\ && netsh wlan stop hostednetwork && NETSH WLAN set hostednetwork mode=allow ssid=${ssid} key=${password} && netsh wlan start hostednetwork'"`, console.log)
     }
-}  
+}
+
 function turnOffHotspot()
 {
     if (legacy == 'false'){
-        execute(`powershell -ExecutionPolicy Bypass -File ${path.join(__dirname, "../hotspotOff.ps1")}`, console.log)
+        if(wifi !== undefined) {
+            wifi.kill('SIGTERM');
+        }
     }
     else{
         execute(`netsh wlan stop hostednetwork`, console.log);
     }
 }
 
+ipc.on('hotspotOn', function(event, data) {
+    turnOnHotspot();
+});
+
 ipc.on('receiveBtn', function(event, data)
 {
     var receive = require('./receive.js');
     dirty = true;
-    turnOnHotspot();
     receive.startMulter();
     bigBrowser();
     window.loadURL(`file://${__dirname}/receive.html`);
@@ -222,14 +239,13 @@ ipc.on('sendBtn', function(event, message) {
 })
 
 ipc.on('fileSend', function(event, filedata) {
-    //turnOnHotspot();
     var send= require('./send.js');
     send.startSend(filedata);
     window.loadURL(`file://${__dirname}/send.html`);
 })
 
 ipc.on('cleanupSend', function(event, message) {
-    //turnOffHotspot();
+    turnOffHotspot();
     var send = require('./send.js');
     send.stopSend();
     smallBrowser(55);

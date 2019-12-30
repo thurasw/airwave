@@ -132,16 +132,21 @@ table:hover {
 }
 #qr {
    border: 5px solid rgb(65, 64, 64);
+   display: none;
+   margin-left: auto;
+   margin-right: auto;
 }
-#helpText {
-   color:rgb(104, 104, 104);
+.helpText {
+   color: white;
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-   margin-left: 20px;
-   margin-right: 10px;
    font-size: small;
-   float: left;
-   text-align: left;
+   text-align: center;
    margin-top: 6px;
+   margin-left: 6px  !important;
+   margin-right: 6px !important;
+   bottom: 10px;
+   position: fixed;
+   display: none;
 }
 .waiting {
    text-align: center;
@@ -240,4 +245,27 @@ table:hover {
    display: block;
    margin-top: 25px;
    margin-bottom: 10px;
+}
+#ip {
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+   font-size: xx-large;
+   margin-top: 50px;
+   text-align: center;
+}
+#frontIp {
+   color: #808080;
+   font-size: x-large;
+}
+#hotspot {
+   font-size: small;
+   text-align: center;
+   display: block;
+   text-decoration: underline;
+   color: #156ecf;
+   cursor: pointer;
+}
+#hotspotText {
+   display: none;
 }

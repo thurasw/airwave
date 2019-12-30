@@ -5,22 +5,20 @@
       <link href="src/style.css" rel="stylesheet">
    </head>
    <body background-color="#303030">
-         <button id="btnCancel" onclick="cancelBtn();" class="button">Cancel</button>
-        <input id="btnClose" type="image" onclick="closeBtn();" src="./res/close.png" alt="close" width="15">
-        <input id="btnMin" type="image" onclick="minimizeBtn();" src="./res/down.png" alt="minimize" width="15">
-        <br>
-        <div id="waiting">
-            <img id="spinner" class="waiting" src="./res/spinner.gif" alt="spinner">
-            <p id="waitText" class="text waiting">Waiting for files..</p>
-            <p class="waiting"><img id= "qr" src='../qr.png' height:27 width:27 alt='qr'></p>
-            <p id = "helpText" class="waiting">Scan the QR code from your phone or connect to the wifi with<br></p>
-         </div>
-         <div id="divInProgress"></div>
-         <div id="divReceived"></div>
-        <script src="src/receive-src.js"></script>
-        <script>
-           const config = require('../config.json');
-           document.getElementById('helpText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
-        </script>
+      <button id="btnCancel" onclick="cancelBtn();" class="button">Cancel</button>
+      <input id="btnClose" type="image" onclick="closeBtn();" src="./res/close.png" alt="close" width="15">
+      <input id="btnMin" type="image" onclick="minimizeBtn();" src="./res/down.png" alt="minimize" width="15">
+      <br>
+      <div id="waiting">
+         <img id="spinner" class="waiting" src="./res/spinner.gif" alt="spinner">
+         <p id="waitText" class="text waiting">Waiting for files..</p>
+         <p class="waiting"><img id= "qr" src='../qr.png' height:27 width:27 alt='qr'></p>
+         <span id='ip' class="text"><span id='frontIp'></span><span id='backIp'></span></span>
+         <p id="hotspotText" class="helpText waiting">Scan the QR code from your phone or connect to the wifi with<br></p i>
+         <p id="wifiText" class="helpText waiting">Enter the code above on your device.<br><br>You must connect to the same WiFi or local network as your phone.<br><br><span id="hotspot" class="waiting" onclick="createHotspot();">Create a hotspot instead.</span></p></p>
+      </div>
+      <div id="divInProgress"></div>
+      <div id="divReceived"></div>
+      <script src="src/receive-src.js"></script>
    </body>
 </html>
