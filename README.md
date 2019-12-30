@@ -23,9 +23,6 @@ This will share the internet from your main WiFi to the hotspot wifi and your ph
 
 3. On a real note, it's very self-explanatory. Very user-friendly. Just try not to mess up the file format of the config.
 
-4. When editing the save directory in config, you have to use double slashes. For example, to point to the desktop, you would have to do 
-(C:\\Users\\username\\Desktop) instead of just one backslash. And don't forget quotes. Speaking of which, default means the desktop.
-
 To-do:\
 Show percentage of file being uploaded\
 Authenticate user before accepting uploads\
