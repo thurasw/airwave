@@ -9,15 +9,16 @@ const main = require('./main.js');
 var server;
 
 var config = require('../config.json');
-var save = config.saveDirectory;
+var save = 'default';
 
 app.use(bodyParser.urlencoded({extended: true}))
 
+var dir;
 if (save == 'default'){
   dir = path.join(os.homedir(), '/Desktop');
 }
 else{
-  dir = config.SaveDirectory;
+  dir = String(config.SaveDirectory);
 }
 
 var storage = multer.diskStorage({
