@@ -21,7 +21,10 @@ This will share the internet from your main WiFi to the hotspot wifi and your ph
 
 3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw)
 
-3. On a real note, it's very self-explanatory. Very user-friendly. Just try not to mess up the file format of the config.
+3. 3. When you change the save directory in config, you must use double backslashes. For example, to point to Desktop, you can use "default". Otherwise, must be like "C:\\Users\\Username\\Downloads"
+
+
+4. On a real note, it's very self-explanatory. Very user-friendly. Just try not to mess up the file format of the config.
 
 To-do:\
 Show percentage of file being uploaded\
