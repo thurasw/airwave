@@ -2,6 +2,8 @@ const { app, Menu, Tray, screen, shell, BrowserWindow, dialog, remote} = require
 const ipc = require('electron').ipcMain;
 const path = require('path');
 const exec = require('child_process').exec;
+const {autoUpdater} = require('electron-updater');
+const log = require("electron-log");
 
 var config = require('../config.json');
 var ssid = config.ssid;
@@ -30,6 +32,36 @@ function generateQr() {
 app.on('ready', () => {
     createWindow();
     createTray();
+    autoUpdater.checkForUpdates();
+})
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+autoUpdater.on('update-available', () => {
+    log.info('Checking..');
+    dialog.showMessageBox({
+        type: 'info',
+        button: [],
+        title: 'Airwave',
+        message: 'An update for Airwave is available and is being downloaded!',
+    })
+})
+autoUpdater.on('update-downloaded', () => {
+    log.info('Downloaded..');
+    dialog.showMessageBox({
+        type: 'info',
+        button: ['Update and Restart', 'Dismiss'],
+        title: 'Airwave',
+        message: 'The update has been downloaded!',
+        detail: 'Do you want to install it now?',
+        cancelId: 1,
+    }, (res) => {
+        if (res === 0) {
+            autoUpdater.quitAndInstall();
+        }
+    })
 })
 
 function adjustWindow()
@@ -79,6 +111,16 @@ const createWindow = () => {
 const createTray = () => {
     tray = new Tray(`${__dirname}\\res\\icon.ico`);
     const contextMenu = Menu.buildFromTemplate([
+        { label: 'About', type: 'normal', 
+            click() {
+                shell.openExternal('https://github.com/thura10/airwave')
+            } 
+        },
+        { label: 'Check for Updates', type: 'normal', 
+            click() {
+                autoUpdater.checkForUpdatesAndNotify();
+            } 
+        },
         { label: 'Config..', type: 'normal', 
             click() {
                 shell.openItem(path.join(__dirname, "../config.json"))
@@ -127,14 +169,7 @@ function turnOnHotspot()
 {   
     if (legacy == 'false') {
         var fs = require('fs');
-        var wifiPath = path.join(__dirname, "../ssid");
-        var pwPath = path.join(__dirname, "../pass");
-        /*if (fs.existsSync(wifiPath)) {
-            fs.unlink(wifiPath);
-        };
-        if (fs.existsSync(pwPath)) {
-            fs.unlink(pwPath);
-        };  */
+
         fs.writeFile(path.join(__dirname, "../ssid"), `${ssid}`, function (err) {
             if (err) throw err;
             console.log('File is created successfully.');

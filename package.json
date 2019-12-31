@@ -1,29 +1,41 @@
 {
   "name": "airwave",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Share Files with iOS",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "build": "electron-builder build --win --publish never",
+    "publish": "electron-builder build --win --publish always"
   },
   "build": {
     "directories": {
-    "output": "build"
+      "output": "build"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "thura10",
+        "repo": "airwave"
+      }
+    ],
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "build/icon.ico"
     },
-    "extraResources": [{ 
-      "from": "extra/"
-    }]
+    "extraResources": [
+      {
+        "from": "extra/"
+      }
+    ]
   },
-
   "repository": {
     "type": "git",
-    "url": "git:+https://github.com/thura10/airwave.git"
+    "url": "https://github.com/thura10/airwave.git"
   },
   "keywords": [
     "airwave",
@@ -34,14 +46,16 @@
   "license": "MIT",
   "dependencies": {
     "callback": "0.0.1",
+    "electron-updater": "^4.2.0",
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "node-powershell": "^4.0.0",
     "os": "^0.1.1",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "electron-log": "^4.0.2"
   },
   "devDependencies": {
-    "electron": "^7.1.7",
+    "electron": "7.1.2",
     "electron-builder": "^21.2.0",
     "electron-reload": "^1.5.0"
   }
