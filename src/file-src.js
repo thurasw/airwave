@@ -53,6 +53,7 @@ function fileDialog() {
             var parts = result.filePaths[i].split('\\');
             var filePath = parts.join('\\\\');
             var name = result.filePaths[i].replace(/^.*[\\\/]/, '');
+            name = name.replace(/\s+/g, '');
             paths.push(result.filePaths[i]);
             names.push(name);
             document.getElementById('fileList').innerHTML = `<table id="${String(name)}" title='Double Click to remove.' ondblclick="removeItem('${name}', '${filePath}');" class="fileList"><tr><td><img class="fileImg" src="./res/file.png" width="25" height="25"></td><td class='uptext'>${name}</td></tr><tr><td></td><td class='downtext'>${getFileSize(result.filePaths[i])}</td></tr></table>` + document.getElementById('fileList').innerHTML;
@@ -90,11 +91,12 @@ function fileDialog() {
         document.getElementById('fileSend').style.display = "block";
         document.getElementById('removeText').style.display = "inline-block";
         for (let f of e.dataTransfer.files) {
-            names.push(f.name);
+            var name = String(f.name).replace(/\s+/g, '');
+            names.push(name);
             paths.push(f.path);
             var parts = f.path.split('\\');
             var filePath = parts.join('\\\\');
-            document.getElementById('fileList').innerHTML = `<table id="${String(f.name)}" title='Double Click to remove.' ondblclick="removeItem('${f.name}', '${filePath}');" class="fileList"><tr><td><img class="fileImg" src="./res/file.png" width="25" height="25"></td><td class='uptext'>${f.name}</td></tr><tr><td></td><td class='downtext'>${formatBytes(f.size)}</td></tr></table>` + document.getElementById('fileList').innerHTML;
+            document.getElementById('fileList').innerHTML = `<table id="${String(name)}" title='Double Click to remove.' ondblclick="removeItem('${f.name}', '${filePath}');" class="fileList"><tr><td><img class="fileImg" src="./res/file.png" width="25" height="25"></td><td class='uptext'>${f.name}</td></tr><tr><td></td><td class='downtext'>${formatBytes(f.size)}</td></tr></table>` + document.getElementById('fileList').innerHTML;
         }
         return false;
     };

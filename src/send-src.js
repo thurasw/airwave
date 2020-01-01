@@ -49,7 +49,7 @@ ipc.on('startSending', function(event, message) {
     }
     var sentId = hostname.replace(/\s+/g, '') + 'Text';
     var barId = hostname.replace(/\s+/g, '') + 'Bar';
-    document.body.innerHTML += `<div class="inProgress text">${hostname}<span class="text progressText"><span id='${sentId}'>0</span> out of ${filecount} files sent</span><div class="barBg"><div id="${barId}" class="progressBar"></div></div></div>`
+    document.body.innerHTML += `<div class="inProgress text">${hostname}<span class="text progressText"><span id="${sentId}">0</span> out of ${filecount} files sent</span><div class="barBg"><div id="${barId}" class="progressBar"></div></div></div>`
 });
 
 ipc.on('sendUpdate', function(event, message) {

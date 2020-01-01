@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            const ipc = require('electron').ipcRenderer;
+            function closeBtn() {
+                ipc.send('cleanupSend', {});
+            }
+            function openLink() {
+                ipc.send('openGithub', {});
+            }
+        </script>
+        <style>
+            #qr {
+                display: block;
+                width: 50vw; 
+                height: 50vw;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .text {
+                font-size: small;  
+                text-align: center; 
+                color: white;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: block;
+                margin: 10px;
+            }
+            .link {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .topText {
+                padding: 3vw;
+                margin: 10vw;
+                margin-bottom: 5vw;
+            }
+            body {
+                background-color: #161616;
+                overflow-x: hidden;
+                margin: 0;
+                height: 100%;
+            }
+            .bottomText {
+                margin-top: 8vw;
+                padding-left: 3vw;
+                padding-right: 3vw;
+            }
+            #btnClose {
+                margin: 4px;
+                float: right;
+            }
+        </style>
+    </head>
+    <body>
+        <input id="btnClose" type="image" onclick="closeBtn();" src="../res/close.png" alt="close" width="15">
+        <p class="text topText">Don't worry. I know you're too lazy to type the URL out so you can just scan this from your phone Camera app.</p>
+        <img id='qr' src='../res/aboutQR.png'>
+        <p class= "text bottomText">You can download the shortcuts for iOS from the link below or by scanning the QR.</p><p class="text link" onclick="openLink();">https://github.com/thura10/airwave</p>
+    </body>
+</html>

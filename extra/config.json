@@ -2,5 +2,7 @@
     "saveDirectory": "default",
     "legacyMode": "false",
     "ssid": "sharewifi19891",
-    "password": "sharepassword12345"
+    "password": "sharepassword12345",
+    "checkForUpdate": "true",
+    "hideDonate": "false"
 }

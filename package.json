@@ -1,6 +1,6 @@
 {
   "name": "airwave",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Share Files with iOS",
   "main": "main.js",
   "scripts": {

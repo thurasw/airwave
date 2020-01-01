@@ -235,7 +235,6 @@ table:hover {
    display: block;
 }
 .progressText {
-   display: list-item;
   float: right;
 }
 .barBg {
