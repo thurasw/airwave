@@ -17,7 +17,7 @@ Download the shortcuts:
 1. Every time you update the SSID of Hotspot in config, you must regenerate QR, restart the app and make appropriate changes in the shortcuts.
 
 2. iOS is pretty hesitant to connect to wifi networks without an internet connection so you might wanna go to Control Panel -> Network and Internet -> Network and Sharing Center -> Change adapter settings -> (Your actual Wifi Adapter **not hosted network**) -> Properties -> Sharing -> Allow other network users to connect through ...
-This will share the internet from your main WiFi to the hotspot wifi and your phone will connect to the hotspot 2x 3x quicker.
+This will share the internet from your main WiFi to the hotspot wifi and your phone will connect to the hotspot 2x 3x quicker. (This option is only available after you turn the hotspot on.)
 
 3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw)
 
