@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcRenderer;
 
-const config = require('../config.json');
+const config = require('../../config.json');
 document.getElementById('hotspotText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
 
 var os= require('os');
@@ -47,7 +47,7 @@ function minimizeBtn()
 {
     ipc.send('minimize', {});
     var minimize = document.getElementById('btnMin');
-    minimize.setAttribute("src", "./res/up.png")
+    minimize.setAttribute("src", "../res/up.png")
     minimize.setAttribute("onclick", "maximizeBtn();")
 }
 
@@ -55,7 +55,7 @@ function maximizeBtn()
 {
     ipc.send('maximize', {});
     var maximize = document.getElementById('btnMin');
-    maximize.setAttribute("src", "./res/down.png")
+    maximize.setAttribute("src", "../res/down.png")
     maximize.setAttribute("onclick", "minimizeBtn();")
 }
 
@@ -65,7 +65,7 @@ ipc.on('inProgress', (event, filedata) => {
     document.getElementById('btnCancel').style.display = "inline-block";
     var hostname = "from ".concat(filedata[1]);
     var size = formatBytes(filedata[2]);
-    document.getElementById('divInProgress').innerHTML += `<table title="Receiving.." id="inProgress" class="inProgress" ><tr><td><img class="fileImg" src="./res/spinner.gif" width="20" height="20"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>`;
+    document.getElementById('divInProgress').innerHTML += `<div class="inProgress listItem text" id="inProgress" title='Receiving..'><div class="listImg"><img src="../res/spinner.gif" width="25" height="25"></div><div class="upText">${filedata[0]}</div><div class="downText">${hostname} - ${size}</div></div>`;
 })
 
 ipc.on('received', (event, filedata) => {
@@ -80,7 +80,7 @@ ipc.on('received', (event, filedata) => {
     }
     var hostname = "from ".concat(filedata[1]);
     var size = formatBytes(filedata[2]);
-    document.getElementById('divReceived').innerHTML = `<table title="Open in Folder" class="received" onclick="openInFolder('${filePath}');"><tr><td><img class="fileImg" src="./res/file.png" width="25" height="25"></td><td class='uptext'>${filedata[0]}</td></tr><tr><td></td><td class='downtext'>${hostname} - ${size}</td></tr></table>` + document.getElementById('divReceived').innerHTML;
+    document.getElementById('divReceived').innerHTML = `<div class="received listItem text" title='Open in Folder' ondclick="openInFolder('${filePath}');"><div class="listImg"><img src="../res/file.png" width="25" height="25"></div><div class="upText">${filedata[0]}</div><div class="downText">${hostname} - ${size}</div></div>` + document.getElementById('divReceived').innerHTML;
 })
 
 function openInFolder(path)

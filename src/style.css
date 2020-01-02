@@ -87,34 +87,38 @@ body {
 #spinner {
    float: center;
 }
-table {
-   background-color: #161616;
-   width: 300px;
-   height: 60px;
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-   text-align:left;
-   vertical-align: top;
+.upText {
+   padding: 10px;
+   padding-bottom: 4px;
+   display: block;
+   margin-left: 4px;
+   width: 270px;
+}
+.downText {
+	padding: 10px;
+   padding-top: 4px;
+   font-size: small;
+   display: block;
+   margin-left: 4px;
+   color: grey;
+   width: 270px;
+}
+.listImg {
+   float: left;
+   padding-left: 20px;
+   padding-top: 20px;
+   padding-right: 20px;
+}
+.listItem {
    display: inline-block;
-   padding: 4px;
+   height: 65px;
+   width: 300px;
+   word-wrap: normal;
    white-space: nowrap;
    overflow: hidden;
 }
-table:hover {
-   background-color: #303030;
-   cursor: pointer;
-}
-.uptext	{
-   font-size:15px;
-   color: white;
-   padding-top: 6px;
-   padding-bottom: 10px;
-   padding-left:10px;
-}
-.downtext {
-   font-size:13px;
-   color: #6e6e6e;
-   padding-left: 12px;
-   padding-bottom:12px;
+.listItem:hover {
+   background-color:#303030;
 }
 @keyframes text-scrolling {
    0% {
@@ -127,9 +131,6 @@ table:hover {
      transform: translateX(5%)
    }
  }
-.fileImg {
-   padding-left: 4px;
-}
 #qr {
    border: 5px solid rgb(65, 64, 64);
    display: none;
@@ -197,11 +198,31 @@ table:hover {
    bottom: 10px;
    border: none;
 }
+#smallSend {
+   background-color: #007AFF;
+   width: 80px;
+   height: 35px;
+   color: white;
+   border-radius: 15px;
+   font-size: 16px;
+   margin-left: auto;
+   margin-right:auto;
+   margin-bottom: 4px;
+   margin-top: 4px;
+   float: right;
+   position: sticky;
+   bottom: 10px;
+   border: none;
+}
 #fileSend:hover {
    background-color: #156ecf;
    color: white;
  }
- #fileSendDiv {
+#smallSend:hover {
+   background-color: #156ecf;
+   color: white;
+}
+#fileSendDiv {
     position: fixed;
     left: 5px;
     right: 5px;
@@ -218,10 +239,6 @@ table:hover {
 }
 .inProgress {
    display: block;
-   padding-top: 20px;
-   padding-bottom:15px;
-   padding-left: 25px;
-   padding-right: 25px;
    background-color: #161616;
    margin-top: 1px;
 }

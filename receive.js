@@ -53,7 +53,7 @@ function afterUpload(req, res, next) {
     error.httpStatusCode = 400
     return next(error)
   }
-  //res.send(file)
+  res.send('Success!')
   next();
 }
 

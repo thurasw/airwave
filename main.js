@@ -11,7 +11,6 @@ var ssid = config.ssid;
 var password = config.password;
 var legacy = config.legacyMode;
 var autoUpdateSetting = config.checkForUpdate;
-var hideDonate = config.hideDonate;
 
 var manualCheckForUpdate = false;
 var dirty = false;
@@ -98,7 +97,7 @@ autoUpdater.on('update-downloaded', () => {
         detail: 'Do you want to install it now?',
         cancelId: '1'
     }).then(result => {
-        if (result.response === 1) {
+        if (result.response === 0) {
             autoUpdater.quitAndInstall();
         }
     });
@@ -144,8 +143,8 @@ const createWindow = () => {
             nodeIntegration: true
         }
     });
-    window.loadURL(`file://${__dirname}/index.html`);
-    //window.webContents.openDevTools();
+    window.loadURL(`file://${__dirname}/public/index.html`);
+    window.webContents.openDevTools();
 }
 
 const createTray = () => {
@@ -175,11 +174,6 @@ const createTray = () => {
         { label: 'README', type: 'normal', 
             click() {
                 shell.openItem(path.join(__dirname, "../readme.txt"))
-            } 
-        },
-        { label: 'Regenerate QR', type: 'normal', 
-            click() {
-                generateQr();
             } 
         },
         { label: 'Donate! :)', type: 'normal',
@@ -213,6 +207,7 @@ function execute(command, callback) {
 var wifi;
 function turnOnHotspot()
 {   
+    generateQr();
     if (legacy == 'false') {
         var fs = require('fs');
 
@@ -266,7 +261,7 @@ ipc.on('receiveBtn', function(event, data)
     dirty = true;
     receive.startMulter();
     bigBrowser();
-    window.loadURL(`file://${__dirname}/receive.html`);
+    window.loadURL(`file://${__dirname}/public/receive.html`);
 });
 
 ipc.on('cancelRcv', function(event, data) {
@@ -289,7 +284,7 @@ ipc.on('cleanupRcv', function(event, data)
     var receive = require('./receive.js');
     smallBrowser(55);
     turnOffHotspot();
-    window.loadURL(`file://${__dirname}/index.html`);
+    window.loadURL(`file://${__dirname}/public/index.html`);
     adjustWindow();
     receive.stopMulter();
     dirty = false;
@@ -322,13 +317,13 @@ function smallBrowser(height)
 ipc.on('sendBtn', function(event, message) {
     dirty = true;
     bigBrowser();
-    window.loadURL(`file://${__dirname}/fileSelect.html`);
+    window.loadURL(`file://${__dirname}/public/fileSelect.html`);
 })
 
 ipc.on('fileSend', function(event, filedata) {
     var send= require('./send.js');
     send.startSend(filedata);
-    window.loadURL(`file://${__dirname}/send.html`);
+    window.loadURL(`file://${__dirname}/public/send.html`);
 })
 
 ipc.on('cleanupSend', function(event, message) {
@@ -336,7 +331,7 @@ ipc.on('cleanupSend', function(event, message) {
     var send = require('./send.js');
     send.stopSend();
     smallBrowser(55);
-    window.loadURL(`file://${__dirname}/index.html`);
+    window.loadURL(`file://${__dirname}/public/index.html`);
     adjustWindow();
     dirty = false;
 })

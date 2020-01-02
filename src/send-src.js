@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcRenderer;
 
-const config = require('../config.json');
+const config = require('../../config.json');
 document.getElementById('hotspotText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
 
 var os= require('os');
