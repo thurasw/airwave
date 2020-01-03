@@ -1,6 +1,6 @@
 {
   "name": "airwave",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Share Files with iOS",
   "main": "main.js",
   "scripts": {
@@ -46,13 +46,13 @@
   "license": "MIT",
   "dependencies": {
     "callback": "0.0.1",
+    "electron-log": "^4.0.2",
+    "electron-store": "^5.1.0",
     "electron-updater": "^4.2.0",
     "express": "^4.17.1",
     "multer": "^1.4.2",
-    "node-powershell": "^4.0.0",
     "os": "^0.1.1",
-    "qrcode": "^1.4.4",
-    "electron-log": "^4.0.2"
+    "qrcode": "^1.4.4"
   },
   "devDependencies": {
     "electron": "7.1.2",

@@ -6,11 +6,53 @@ const {autoUpdater} = require('electron-updater');
 const log = require("electron-log");
 var app_version = require('./package.json').version;
 
-var config = require('../config.json');
-var ssid = config.ssid;
-var password = config.password;
-var legacy = config.legacyMode;
-var autoUpdateSetting = config.checkForUpdate;
+const Store = require('electron-store');
+const schema = {
+    saveDir: {
+        type: 'string',
+        default: 'Desktop',
+    },
+    legacy: {
+        type: 'boolean',
+        default: false,
+    },
+    ssid: {
+        type: 'string',
+        default: 'sharewifi19891',
+    },
+    password: {
+        type: 'string',
+        default: 'sharepassword12345'
+    },
+    checkForUpdate: {
+        type: 'boolean',
+        default: true,
+    },
+};
+const store = new Store({schema});
+var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate')]
+ipc.on('reqConfig', function(event) {
+    window.webContents.send('config', config);
+})
+
+ipc.on('configSaved', function(event, newConfig) {
+    console.log(newConfig)
+    generateQr();
+    store.set('saveDir', newConfig[0]);
+    store.set('legacy', newConfig[1]);
+    store.set('ssid', newConfig[2]);
+    store.set('password', newConfig[3]);
+    store.set('checkForUpdate', newConfig[4]);
+    smallBrowser(55);
+    window.loadURL(`file://${__dirname}/public/index.html`);
+    adjustWindow();
+})
+
+var saveDir = store.get('saveDir');
+var legacy = store.get('legacy');
+var ssid = store.get('ssid');
+var password = store.get('password');
+var autoUpdateSetting = store.get('checkForUpdate');
 
 var manualCheckForUpdate = false;
 var dirty = false;
@@ -53,6 +95,7 @@ else
         }
     })
 }
+app.on('window-all-closed', e => e.preventDefault() )
 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -144,7 +187,7 @@ const createWindow = () => {
         }
     });
     window.loadURL(`file://${__dirname}/public/index.html`);
-    window.webContents.openDevTools();
+    //window.webContents.openDevTools();
 }
 
 const createTray = () => {
@@ -166,15 +209,17 @@ const createTray = () => {
                 manualCheckForUpdate == true;
             } 
         },
-        { label: 'Config..', type: 'normal', 
-            click() {
-                shell.openItem(path.join(__dirname, "../config.json"))
-            } 
-        },
         { label: 'README', type: 'normal', 
-            click() {
-                shell.openItem(path.join(__dirname, "../readme.txt"))
-            } 
+        click() {
+            shell.openItem(path.join(__dirname, "../readme.txt"))
+        } 
+        },
+        { label: 'Settings', type: 'normal', 
+        click() {
+            bigBrowser();
+            window.loadURL(`file://${__dirname}/public/settings.html`);
+            showWindow();
+        } 
         },
         { label: 'Donate! :)', type: 'normal',
             click() {
@@ -207,8 +252,7 @@ function execute(command, callback) {
 var wifi;
 function turnOnHotspot()
 {   
-    generateQr();
-    if (legacy == 'false') {
+    if (legacy == false) {
         var fs = require('fs');
 
         fs.writeFile(path.join(__dirname, "../ssid"), `${ssid}`, function (err) {
@@ -237,11 +281,14 @@ function turnOnHotspot()
             }
         });
     }
+    else {
+        execute(`powershell -Command "Start-Process cmd -Verb RunAs -ArgumentList '/c cd c:\ && netsh wlan stop hostednetwork && NETSH WLAN set hostednetwork mode=allow ssid=${ssid} key=${password} && netsh wlan start hostednetwork'"`)
+    }
 }
 
 function turnOffHotspot()
 {
-    if (legacy == 'false'){
+    if (legacy == false){
         if(wifi !== undefined) {
             wifi.kill('SIGTERM');
         }
@@ -259,6 +306,7 @@ ipc.on('receiveBtn', function(event, data)
 {
     var receive = require('./receive.js');
     dirty = true;
+    receive.setSaveDir(saveDir);
     receive.startMulter();
     bigBrowser();
     window.loadURL(`file://${__dirname}/public/receive.html`);
@@ -355,3 +403,24 @@ function githubQr() {
 ipc.on('openGithub', function(event, message) {
     shell.openExternal('https://github.com/thura10/airwave')
 })
+
+/*
+var inactivityTime = function () {
+    var time;
+    resetTimer();
+
+    function quit() {
+        if (inactivity == true) {
+            app.quit();
+        }
+        else {
+            return;
+        }
+    }
+    function resetTimer() {
+        clearTimeout(time);
+        time = setTimeout(quit, 5000)
+        // 1000 milliseconds = 1 second
+    }
+};
+*/

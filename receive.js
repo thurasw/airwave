@@ -8,18 +8,18 @@ const path = require('path');
 const main = require('./main.js');
 var server;
 
-var config = require('../config.json');
-var save = config.saveDirectory;
-
 app.use(bodyParser.urlencoded({extended: true}))
 
 var dir;
-if (save == 'default'){
-  dir = path.join(os.homedir(), '/Desktop');
+function setSaveDir(save) {
+  if (save == 'Desktop'){
+    dir = path.join(os.homedir(), '/Desktop');
+  }
+  else{
+    dir = save;
+  }
 }
-else{
-  dir = String(config.saveDirectory);
-}
+exports.setSaveDir = setSaveDir;
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {

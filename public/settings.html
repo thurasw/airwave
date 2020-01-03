@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+    <link href='../src/style.css' rel='stylesheet'>
+</head>
+<body class='form text'>
+    <div class='setting caption'>
+      Save Directory:<input id='saveDir' class='option' type="image" src='../res/folder.png' width="25px" height="25px" name="saveDir">
+        <span class='details'>The save directory for incoming files.</span>
+        <span onclick="openSaveDir();" id='currentSave'></span>
+    </div>
+    <div class='setting'>
+        <span class='caption'>Legacy Mode for Hotspot:</span>
+        <select class='option' id="legacy">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+        <span class='details caption'>Use 'netsh' method to create a hotspot instead. (Slower and less compatibility with many PCs.)</span>
+    </div>
+    <div class='setting'>
+        <span class='caption'>Hotspot SSID:</span id='ssid'>
+        <input id='ssid' class='field' type="text" name="ssid">
+        <span class='caption details'>The SSID to create a WiFi Hotspot with.</span>
+    </div>
+    <div class='setting'>
+        <span class='caption'>Hotspot Password:</span>
+        <input id='password' class='field' type="text" name="ssid">
+        <span class='caption details'>The password to create a WiFi Hotspot with.</span>
+    </div>
+    <div class='setting'>
+        <span class='caption'>Auto Update:</span>
+        <select class='option' id="checkForUpdate">
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
+        <span class='details caption'>Check for updates on startup and update if found. (Recommended as the app might not be very stable.)</span>
+    </div>
+    <input title='Save' value='Save' id='save' type="button">
+    <script src='../src/settings.js'></script>
+</body>

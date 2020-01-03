@@ -10,7 +10,9 @@ function minimizeBtn()
     var minimize = document.getElementById('btnMin');
     minimize.setAttribute("src", "../res/up.png")
     minimize.setAttribute("onclick", "maximizeBtn();")
-    smallSend();
+    if (document.getElementsByClassName('listItem').length > 0) {
+        smallSend();
+    }
 }
 
 function maximizeBtn()
@@ -26,13 +28,13 @@ function closeBtn() {
 }
 
 function removeItem(name, path) {
+    name = name.replace(/\s+/g, '');
     document.getElementById('fileList').removeChild(document.getElementById(name));
     names.splice( names.indexOf(name), 1 );
     paths.splice( paths.indexOf(path), 1 );
-    console.log(document.getElementsByClassName('fileList').length);
-    if (document.getElementsByClassName('fileList').length == 0) {
+    if (document.getElementsByClassName('listItem').length == 0) {
         document.getElementById('waiting').style.display = "block";
-        document.getElementById('fileSend').style.display = "none";
+        document.getElementsByClassName('fileSendBtn')[0].style.display = "none";
         document.getElementById('removeText').style.display = "none";
     }
 };
@@ -47,14 +49,14 @@ let options = {
 }
 function addFile() {
     document.getElementById('waiting').style.display = "none";
-    document.getElementById('fileSend').style.display = "block";
+    document.getElementsByClassName('fileSendBtn')[0].style.display = "block";
     document.getElementById('removeText').style.display = "inline-block";
-    if (document.getElementsByClassName('listItem').length > 4) {
+    if (document.getElementsByClassName('listItem').length > 3) {
         smallSend();
     }
 }
 function smallSend() {
-    var fileSend = document.getElementById('fileSend')
+    var fileSend = document.getElementsByClassName('fileSendBtn')[0];
     fileSend.id = 'smallSend';
     fileSend.innerHTML = 'Send';
 }

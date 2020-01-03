@@ -1,7 +1,13 @@
 const ipc = require('electron').ipcRenderer;
 
-const config = require('../../config.json');
-document.getElementById('hotspotText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
+var ssid;
+var password;
+ipc.send('reqConfig', {});
+ipc.on('config', function(event, reqConfig) {
+  ssid = reqConfig[2];
+  password = reqConfig[3];
+  document.getElementById('hotspotText').innerHTML += `Name: "${ssid}"<br>Passkey: "${password}"`;
+})
 
 var os= require('os');
 var interfaces = os.networkInterfaces();
@@ -24,15 +30,17 @@ function minimizeBtn()
 {
     ipc.send('minimize', {});
     var minimize = document.getElementById('btnMin');
-    minimize.setAttribute("src", "./res/up.png")
+    minimize.setAttribute("src", "../res/up.png")
     minimize.setAttribute("onclick", "maximizeBtn();")
+    document.getElementById('hotspotText').style.display = 'none';
 }
 function maximizeBtn()
 {
     ipc.send('maximize', {});
     var maximize = document.getElementById('btnMin');
-    maximize.setAttribute("src", "./res/down.png")
+    maximize.setAttribute("src", "../res/down.png")
     maximize.setAttribute("onclick", "minimizeBtn();")
+    document.getElementById('hotspotText').style.display = 'block';
 }
 function closeBtn() {
     ipc.send('cleanupSend', {});

@@ -1,7 +1,11 @@
 const ipc = require('electron').ipcRenderer;
 
-const config = require('../../config.json');
-document.getElementById('hotspotText').innerHTML += `Name: "${config.ssid}"<br>Passkey: "${config.password}"`;
+ipc.send('reqConfig', {});
+ipc.on('config', function(event, reqConfig) {
+  var ssid = reqConfig[2];
+  var password = reqConfig[3];
+  document.getElementById('hotspotText').innerHTML += `Name: "${ssid}"<br>Passkey: "${password}"`;
+})
 
 var os= require('os');
 var interfaces = os.networkInterfaces();
@@ -49,6 +53,7 @@ function minimizeBtn()
     var minimize = document.getElementById('btnMin');
     minimize.setAttribute("src", "../res/up.png")
     minimize.setAttribute("onclick", "maximizeBtn();")
+    document.getElementById('hotspotText').style.display = 'none';
 }
 
 function maximizeBtn()
@@ -57,6 +62,7 @@ function maximizeBtn()
     var maximize = document.getElementById('btnMin');
     maximize.setAttribute("src", "../res/down.png")
     maximize.setAttribute("onclick", "minimizeBtn();")
+    document.getElementById('hotspotText').style.display = 'block';
 }
 
 ipc.on('inProgress', (event, filedata) => {
