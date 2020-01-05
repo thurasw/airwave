@@ -7,10 +7,10 @@ Airwave is a simple electron app to transfer files between iOS and Windows. It i
 Download the shortcuts:  
 
 
-[Send - Over LAN](https://www.icloud.com/shortcuts/dbc3b8c75e3f4746aee8ac5290257f9e)  
-[Receive - Over LAN](https://www.icloud.com/shortcuts/2da38343c144499ca0ef00aa9c9df8fb)  
-[Send - Using Hotspot](https://www.icloud.com/shortcuts/8503fa691f2f4affbb67e2f705462e87)  
-[Receive - Using Hotspot](https://www.icloud.com/shortcuts/35c2c52d681d41c596f5448b1bc1598c)  
+[Send - Over LAN](https://www.icloud.com/shortcuts/0a71151411274384977d6a636075cbd0)  
+[Receive - Over LAN](https://www.icloud.com/shortcuts/7459e65af6854bdcac10ef7f79f7f25a)  
+[Send - Using Hotspot](https://www.icloud.com/shortcuts/8cc6185536944118854a67e5eb833b42)  
+[Receive - Using Hotspot](https://www.icloud.com/shortcuts/efa9ef4d9b1b4dc794f9763179fad6ee)  
 
 # Before you use
 
