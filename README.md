@@ -14,15 +14,13 @@ Download the shortcuts:
 
 # Before you use
 
-1. Every time you update the SSID of Hotspot in settings, you must regenerate QR, restart the app and make appropriate changes in the shortcuts.
-
-2. If you get a prompt to allow airwave through the firewall, make sure to select both public and private networks. (For some reason, Windows seems to consider the Hotspot created as a public network.)
+1. If you get a prompt to allow airwave through the firewall, make sure to select both public and private networks. (For some reason, Windows seems to consider the Hotspot created as a public network.)
 If you don't get the prompt, you will have to go into Windows Firewall settings and allow airwave through both public and private networks.
 
-3. iOS is pretty hesitant to connect to wifi networks without an internet connection so you might wanna go to Control Panel -> Network and Internet -> Network and Sharing Center -> Change adapter settings -> (Your actual Wifi Adapter **not hosted network**) -> Properties -> Sharing -> Allow other network users to connect through ...
+2. iOS is pretty hesitant to connect to wifi networks without an internet connection so you might wanna go to Control Panel -> Network and Internet -> Network and Sharing Center -> Change adapter settings -> (Your actual Wifi Adapter **not hosted network**) -> Properties -> Sharing -> Allow other network users to connect through ...
 This will share the internet from your main WiFi to the hotspot wifi and your phone will connect to the hotspot 2x 3x quicker. (This option is only available after you turn the hotspot on.)
 
-3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw)
+3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw) (jk)
 
 4. On a real note, it's very self-explanatory. Very user-friendly.
 
