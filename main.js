@@ -169,10 +169,26 @@ const getWindowPosition = () => {
     const windowBounds = window.getBounds();
     const trayBounds = tray.getBounds();
     let screenBounds = screen.getPrimaryDisplay();
+    var x; var y;
+    if (trayBounds.y ==0) {
+        x = Math.round(screenBounds.bounds.width - windowBounds.width)
+        y = Math.round(trayBounds.height)    
+    }
+    else if (screenBounds.bounds.height == screenBounds.workArea.height) {
+        if (screenBounds.workArea.x == 0) {
+            x = Math.round(screenBounds.bounds.width - windowBounds.width - (screenBounds.bounds.width - screenBounds.workArea.width))
+            y = Math.round(screenBounds.bounds.height - windowBounds.height)        
+        }
+        else {
+            x = Math.round(screenBounds.workArea.x)
+            y = Math.round(screenBounds.bounds.height - windowBounds.height)        
+        }
+    }
+    else {
+        x = Math.round(screenBounds.bounds.width - windowBounds.width)
+        y = Math.round(screenBounds.bounds.height - windowBounds.height - trayBounds.height)    
+    }
     
-    const x = Math.round(screenBounds.bounds.width - windowBounds.width)
-
-    const y = Math.round(screenBounds.bounds.height - windowBounds.height - trayBounds.height)
     return {x: x, y: y}
 }
 
