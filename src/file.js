@@ -50,8 +50,11 @@ let options = {
 function addFile() {
     document.getElementById('waiting').style.display = "none";
     document.getElementsByClassName('fileSendBtn')[0].style.display = "block";
+    if (window.innerHeight == 120) {
+        smallSend();
+    }
     document.getElementById('removeText').style.display = "inline-block";
-    if (document.getElementsByClassName('listItem').length > 3) {
+    if (document.getElementsByClassName('listItem').length > 2) {
         smallSend();
     }
 }
@@ -62,15 +65,20 @@ function smallSend() {
 }
 function fileDialog() {
     dialog.showOpenDialog(win, options).then(result => {
-        addFile();
-        for (var i=0; i<result.filePaths.length; i++) {
-            var parts = result.filePaths[i].split('\\');
-            var filePath = parts.join('\\\\');
-            var name = result.filePaths[i].replace(/^.*[\\\/]/, '');
-            name = name.replace(/\s+/g, '');
-            paths.push(result.filePaths[i]);
-            names.push(name);
-            document.getElementById('fileList').innerHTML = `<div id="${String(name)}" class="listItem text" title='Double Click to remove' ondblclick="removeItem('${name}', '${filePath}');"><div class="listImg"><img src="../res/file.png" width="25" height="25"></div><div class="upText">${name}</div><div class="downText">${getFileSize(result.filePaths[i])}</div></div>` + document.getElementById('fileList').innerHTML;
+        if (result.canceled) {
+            return;
+        }
+        else {
+            addFile();
+            for (var i=0; i<result.filePaths.length; i++) {
+                var parts = result.filePaths[i].split('\\');
+                var filePath = parts.join('\\\\');
+                var name = result.filePaths[i].replace(/^.*[\\\/]/, '');
+                name = name.replace(/\s+/g, '');
+                paths.push(result.filePaths[i]);
+                names.push(name);
+                document.getElementById('fileList').innerHTML = `<div id="${String(name)}" class="listItem text" title='Double Click to remove' ondblclick="removeItem('${name}', '${filePath}');"><div class="listImg"><img src="../res/file.png" width="25" height="25"></div><div class="upText">${name}</div><div class="downText">${getFileSize(result.filePaths[i])}</div></div>` + document.getElementById('fileList').innerHTML;
+            }
         }
       }).catch(err => {
         console.log(err)

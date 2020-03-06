@@ -8,7 +8,7 @@ var server;
 
 app.use(bodyParser.urlencoded({extended: true}))
 
-function startSend(filedata) {
+function startSend(filedata, port) {
     var names = filedata[0];
     var paths = filedata[1];
     app.get('/filedata', function(req, res) {
@@ -23,8 +23,9 @@ function startSend(filedata) {
             main.sendUpdate([names.length, req.get('hostname')]);
         });
     });
-    server = app.listen(3000, () => console.log('Server set up for download!'));
+    server = app.listen(port, () => console.log('Server set up for download!'));
 }
+
 exports.startSend = startSend;
 
 function stopSend() {

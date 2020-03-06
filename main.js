@@ -18,7 +18,7 @@ const schema = {
     },
     ssid: {
         type: 'string',
-        default: 'sharewifi19891',
+        default: 'airwave',
     },
     password: {
         type: 'string',
@@ -28,6 +28,12 @@ const schema = {
         type: 'boolean',
         default: true,
     },
+    port: {
+        type: 'number',
+        maximum: 65535,
+		minimum: 1,
+		default: 3000
+    }
 };
 const store = new Store({schema});
 var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate')]
@@ -36,16 +42,14 @@ ipc.on('reqConfig', function(event) {
 })
 
 ipc.on('configSaved', function(event, newConfig) {
-    console.log(newConfig)
-    generateQr();
     store.set('saveDir', newConfig[0]);
     store.set('legacy', newConfig[1]);
     store.set('ssid', newConfig[2]);
     store.set('password', newConfig[3]);
     store.set('checkForUpdate', newConfig[4]);
-    smallBrowser(55);
-    window.loadURL(`file://${__dirname}/public/index.html`);
-    adjustWindow();
+    isInProgress = false;
+    app.relaunch();
+    generateQr(app.quit)
 })
 
 var saveDir = store.get('saveDir');
@@ -53,13 +57,14 @@ var legacy = store.get('legacy');
 var ssid = store.get('ssid');
 var password = store.get('password');
 var autoUpdateSetting = store.get('checkForUpdate');
+var portNumber = store.get('port');
 
 var manualCheckForUpdate = false;
-var dirty = false;
+var isInProgress = false;
 let tray = undefined;
 let window = undefined;
 
-function generateQr() {
+function generateQr(callback) {
     const qr = require('qrcode');
     var fs = require('fs');
     var filepath = path.join(__dirname, "../qr.png")
@@ -73,6 +78,7 @@ function generateQr() {
         });
     qr.toFile(path.join(__dirname, "../qr.png"), `WIFI:T:WPA;S:${ssid};P:${password};;`);
     }
+    callback();
 }
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -83,18 +89,19 @@ else
 {
     app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-        showWindow();
+        toggleWindow();
     })
   
     // Create myWindow, load the rest of the app, etc...
     app.on('ready', () => {
-        createWindow();
+        //createWindow();
         createTray();
         if (autoUpdateSetting !== false) {
             autoUpdater.checkForUpdates();
         }
     })
 }
+// don't close the app after all windows are closed.
 app.on('window-all-closed', e => e.preventDefault() )
 
 autoUpdater.logger = log;
@@ -209,16 +216,18 @@ const createTray = () => {
                 manualCheckForUpdate == true;
             } 
         },
-        { label: 'README', type: 'normal', 
-        click() {
-            shell.openItem(path.join(__dirname, "../readme.txt"))
-        } 
-        },
         { label: 'Settings', type: 'normal', 
         click() {
-            bigBrowser();
-            window.loadURL(`file://${__dirname}/public/settings.html`);
-            showWindow();
+            if (isDestroyed) {
+                createWindow();
+                isDestroyed = false;
+            }
+            if (!isInProgress) {
+                isInProgress = true;
+                bigBrowser();
+                window.loadURL(`file://${__dirname}/public/settings.html`);
+                showWindow();
+            }
         } 
         },
         { label: 'Donate! :)', type: 'normal',
@@ -231,18 +240,22 @@ const createTray = () => {
     tray.setToolTip('Share or Receive files from iOS.')
     tray.setContextMenu(contextMenu)
     tray.on('click', function (event) {
-        if (dirty==false){
+        if (!isInProgress){
             toggleWindow();
         }
     })
 }
 
+var isDestroyed = true;
 const toggleWindow = () => {
-    if (window.isVisible() == true) {
-        window.hide();
+    if (isDestroyed) {
+        createWindow();
+        showWindow();
+        isDestroyed = false;
     }
     else {
-        showWindow();
+        window.destroy();
+        isDestroyed = true;
     }
 }
 
@@ -305,9 +318,9 @@ ipc.on('hotspotOn', function(event, data) {
 ipc.on('receiveBtn', function(event, data)
 {
     var receive = require('./receive.js');
-    dirty = true;
+    isInProgress = true;
     receive.setSaveDir(saveDir);
-    receive.startMulter();
+    receive.startMulter(portNumber);
     bigBrowser();
     window.loadURL(`file://${__dirname}/public/receive.html`);
 });
@@ -316,11 +329,11 @@ ipc.on('cancelRcv', function(event, data) {
     var receive = require('./receive.js');
     receive.cancel();
     receive.stopMulter();
-    receive.startMulter();
+    receive.startMulter(portNumber);
 });
 
 ipc.on('minimize', function(event, data) {
-    smallBrowser(100);
+    smallBrowser(120);
 })
 
 ipc.on('maximize', function(event, data) {
@@ -330,12 +343,12 @@ ipc.on('maximize', function(event, data) {
 ipc.on('cleanupRcv', function(event, data)
 {
     var receive = require('./receive.js');
-    smallBrowser(55);
+    receive.stopMulter();
     turnOffHotspot();
     window.loadURL(`file://${__dirname}/public/index.html`);
+    smallBrowser(55);
     adjustWindow();
-    receive.stopMulter();
-    dirty = false;
+    isInProgress = false;
 });
 
 function received(filedata)
@@ -363,14 +376,14 @@ function smallBrowser(height)
 }
 
 ipc.on('sendBtn', function(event, message) {
-    dirty = true;
+    isInProgress = true;
     bigBrowser();
     window.loadURL(`file://${__dirname}/public/fileSelect.html`);
 })
 
 ipc.on('fileSend', function(event, filedata) {
     var send= require('./send.js');
-    send.startSend(filedata);
+    send.startSend(filedata, portNumber);
     window.loadURL(`file://${__dirname}/public/send.html`);
 })
 
@@ -378,10 +391,10 @@ ipc.on('cleanupSend', function(event, message) {
     turnOffHotspot();
     var send = require('./send.js');
     send.stopSend();
-    smallBrowser(55);
     window.loadURL(`file://${__dirname}/public/index.html`);
+    smallBrowser(55);
     adjustWindow();
-    dirty = false;
+    isInProgress = false;
 })
 
 function startSending(message) {
@@ -394,10 +407,15 @@ exports.startSending = startSending;
 exports.sendUpdate = sendUpdate;
 
 function githubQr() {
-    if (dirty == false) {
+    if (isDestroyed) {
+        createWindow();
+        isDestroyed = false;
+    }
+    if (!isInProgress) {
         showWindow();
         window.loadURL(`file://${__dirname}/public/aboutQR.html`);
         bigBrowser();
+        isInProgress = true;
     }
 }
 ipc.on('openGithub', function(event, message) {

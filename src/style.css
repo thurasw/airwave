@@ -69,18 +69,14 @@ body {
 #btnClose {
    float: right;
    vertical-align: top;
-   margin-top: 4px;
-   margin-right:10px;
-   margin-bottom:15px;
+   margin: 10px;
    position: sticky;
    top: 10px;
 }
 #btnMin {
    float: right;
    vertical-align: top;
-   margin-top: 4px;
-   margin-right: 15px;
-   margin-bottom: 15px;
+   margin: 10px;
    position: sticky;
    top: 10px;
 }
@@ -238,12 +234,17 @@ body {
    display: none;
 }
 .inProgress {
+   margin-top: 18px;
    display: block;
    background-color: #161616;
-   margin-top: 1px;
+   height: 65px;
 }
 .inProgress:hover {
   background-color: #303030
+}
+.sendProgress {
+   margin-top: 15px !important;
+   padding: 15px;
 }
 .progressBar {
   background-color: #007AFF;
@@ -257,9 +258,14 @@ body {
 .barBg {
   background-color: #303030;
    height: 3px;
-   width: 100%;
-   display: block;
+   width: 80%;
+   display: inline-block;
    margin-top: 25px;
+   margin-bottom: 10px;
+}
+.percentage {
+   float: right;
+   margin-top: 15px;
    margin-bottom: 10px;
 }
 #ip {
@@ -349,4 +355,12 @@ body {
    height: 25px;
    color: darkgrey;
    padding-left: 4px;
+}
+#header {
+   background-color: transparent;
+   position: fixed;
+   display: block;
+   top: 0px;
+   white-space: nowrap;
+   width: 100%;
 }

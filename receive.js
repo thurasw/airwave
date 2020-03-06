@@ -59,9 +59,9 @@ function afterUpload(req, res, next) {
 
 app.post('/uploadfile', [beforeUpload, upload.single('single'), afterUpload]);
 
-function startMulter()
+function startMulter(port)
 {
-  server = app.listen(3000, () => console.log('Listening for files!'));
+  server = app.listen(port, () => console.log('Listening for files!'));
 }
 
 function stopMulter()
