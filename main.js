@@ -36,7 +36,7 @@ const schema = {
     }
 };
 const store = new Store({schema});
-var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate')]
+var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate'), store.get('port')]
 ipc.on('reqConfig', function(event) {
     window.webContents.send('config', config);
 })
@@ -47,6 +47,7 @@ ipc.on('configSaved', function(event, newConfig) {
     store.set('ssid', newConfig[2]);
     store.set('password', newConfig[3]);
     store.set('checkForUpdate', newConfig[4]);
+    store.set('port', newConfig[5]);
     isInProgress = false;
     app.relaunch();
     generateQr(app.quit)

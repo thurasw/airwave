@@ -34,6 +34,11 @@
         </select>
         <span class='details caption'>Check for updates on startup and update if found. (Recommended as the app might not be very stable.)</span>
     </div>
+    <div class='setting'>
+        <span class='caption'>Port Number:</span>
+        <input id='port' class='field' oninput="this.value=this.value.slice(0,5)" type="number" name="port">
+        <span class='caption details'>(Advanced) If you change this, you will have to mess with the shortcuts too.</span>
+    </div>
     <input title='Save' value='Save' id='save' type="button">
     <script src='../src/settings.js'></script>
 </body>
