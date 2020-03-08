@@ -74,7 +74,7 @@ function fileDialog() {
                 var parts = result.filePaths[i].split('\\');
                 var filePath = parts.join('\\\\');
                 var name = result.filePaths[i].replace(/^.*[\\\/]/, '');
-                name = name.replace(/\s+/g, '');
+                name = name.replace(/[^0-9a-zA-Z.,]/g, '');
                 paths.push(result.filePaths[i]);
                 names.push(name);
                 document.getElementById('fileList').innerHTML = `<div id="${String(name)}" class="listItem text" title='Double Click to remove' ondblclick="removeItem('${name}', '${filePath}');"><div class="listImg"><img src="../res/file.png" width="25" height="25"></div><div class="upText">${name}</div><div class="downText">${getFileSize(result.filePaths[i])}</div></div>` + document.getElementById('fileList').innerHTML;
@@ -115,8 +115,8 @@ function fileDialog() {
         document.getElementById('drag-file').style.backgroundColor = '#161616';
         addFile();
         for (let f of e.dataTransfer.files) {
-            var name = String(f.name).replace(/\s+/g, '');
-            names.push(name);
+            var name = String(f.name);
+            names.push(name.replace(/[^0-9a-zA-Z.,]/g, ''));
             paths.push(f.path);
             var parts = f.path.split('\\');
             var filePath = parts.join('\\\\');

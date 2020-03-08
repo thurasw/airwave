@@ -18,7 +18,7 @@ function startSend(filedata, port) {
     });
     paths.forEach(function(path, index) { 
         var name = path.replace(/^.*[\\\/]/, '')
-        app.get(`/${name.replace(/\s+/g, '')}`, function(req, res) {
+        app.get(`/${name.replace(/[^0-9a-zA-Z.,]/g, '')}`, function(req, res) {
             res.sendFile(path);
             main.sendUpdate([names.length, req.get('hostname')]);
         });
