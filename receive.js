@@ -4,6 +4,7 @@ const multer = require('multer');
 const app = express();
 const os = require('os');
 const path = require('path');
+const WindowsToaster = require('node-notifier').WindowsToaster
 
 const main = require('./main.js');
 var server;
@@ -34,6 +35,31 @@ var upload = multer({
   storage: storage,
 })
 
+function approval(req, res, next) {
+  var notifier = new WindowsToaster()
+  notifier.notify(
+    {
+        title: req.get('hostname'),
+        message: `would like to send ${req.get('filecount')} files.`,
+        icon: path.join(__dirname, '/res/icon.ico'),
+        actions: ['Accept', 'Dismiss'],
+        wait: true
+    }
+  );
+
+  notifier.on('activate', () => {
+    main.receiveBtn();
+    setTimeout(next,1000)
+  });
+  notifier.on('accept', () => {
+    main.receiveBtn();
+    setTimeout(next,1000)
+  });
+  notifier.on('dismiss', function() {
+    res.send('The transfer was cancelled!')
+  })
+}
+
 function beforeUpload(req, res, next) {
   var filedata = [req.get('filename'), req.get('hostname'), req.get('Content-Length')];
   main.inProgress(filedata);
@@ -54,10 +80,9 @@ function afterUpload(req, res, next) {
     return next(error)
   }
   res.send('Success!')
-  next();
 }
 
-app.post('/uploadfile', [beforeUpload, upload.single('single'), afterUpload]);
+app.post('/uploadfile', [approval, beforeUpload, upload.single('single'), afterUpload]);
 
 function startMulter(port)
 {

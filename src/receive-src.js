@@ -98,7 +98,13 @@ ipc.on('inProgress', (event, filedata) => {
 ipc.on('received', (event, filedata) => {
     btnClose.style.display = "inline-block";
     btnCancel.style.display = "none";
-    divInProgress.removeChild(divInProgress.childNodes[0]);
+    if (divInProgress.childNodes.length == 0) {
+        ipc.send('inProgress', filedata);
+        return
+    }
+    else {
+        divInProgress.removeChild(divInProgress.childNodes[0]);
+    }
     var parts = filedata[3].split('\\');
     filePath = parts.join('\\\\');
     if (filedata[1] == null) {

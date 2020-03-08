@@ -108,6 +108,10 @@ function fileDialog() {
 
     holder.ondrop = (e) => {
         e.preventDefault();
+        if (e.dataTransfer.files.length ==0) {
+            document.getElementById('drag-file').style.backgroundColor = '#161616';
+            return false;
+        }
         document.getElementById('drag-file').style.backgroundColor = '#161616';
         addFile();
         for (let f of e.dataTransfer.files) {

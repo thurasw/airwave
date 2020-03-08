@@ -332,19 +332,25 @@ ipc.on('hotspotOn', function(event, data) {
     turnOnHotspot();
 });
 
-ipc.on('receiveBtn', function(event, data)
-{
-    var receive = require('./receive.js');
-    isInProgress = true;
-    receive.setSaveDir(saveDir);
-    receive.startMulter(portNumber);
-    bigBrowser();
-    window.loadURL(`file://${__dirname}/public/receive.html`);
-});
+var receive = require('./receive.js');
+receive.setSaveDir(saveDir);
+receive.startMulter(portNumber);
+
+function receiveBtn() {
+    if (isDestroyed) {
+        toggleWindow();
+    }
+    if (!isInProgress) {
+        isInProgress = true;
+        bigBrowser();
+        window.loadURL(`file://${__dirname}/public/receive.html`);
+    }
+}
+exports.receiveBtn = receiveBtn;
+
+ipc.on('receiveBtn', receiveBtn);
 
 ipc.on('cancelRcv', function(event, data) {
-    var receive = require('./receive.js');
-    receive.cancel();
     receive.stopMulter();
     receive.startMulter(portNumber);
 });
@@ -359,8 +365,6 @@ ipc.on('maximize', function(event, data) {
 
 ipc.on('cleanupRcv', function(event, data)
 {
-    var receive = require('./receive.js');
-    receive.stopMulter();
     turnOffHotspot();
     window.loadURL(`file://${__dirname}/public/index.html`);
     smallBrowser(55);
@@ -374,8 +378,13 @@ function received(filedata)
 }
 exports.received = received;
 
+ipc.on('inProgress', function(event, message) {
+    inProgress(message);
+    received(message)
+})
+
 function inProgress(filedata) {
-    window.webContents.send('inProgress', filedata);
+    window.webContents.send('inProgress', filedata);  
 }
 exports.inProgress = inProgress;
 
@@ -394,6 +403,7 @@ function smallBrowser(height)
 
 ipc.on('sendBtn', function(event, message) {
     isInProgress = true;
+    receive.stopMulter();
     bigBrowser();
     window.loadURL(`file://${__dirname}/public/fileSelect.html`);
 })
@@ -412,6 +422,9 @@ ipc.on('cleanupSend', function(event, message) {
     smallBrowser(55);
     adjustWindow();
     isInProgress = false;
+
+    receive.setSaveDir(saveDir);
+    receive.startMulter(portNumber);
 })
 
 function startSending(message) {
@@ -438,24 +451,3 @@ function githubQr() {
 ipc.on('openGithub', function(event, message) {
     shell.openExternal('https://github.com/thura10/airwave')
 })
-
-/*
-var inactivityTime = function () {
-    var time;
-    resetTimer();
-
-    function quit() {
-        if (inactivity == true) {
-            app.quit();
-        }
-        else {
-            return;
-        }
-    }
-    function resetTimer() {
-        clearTimeout(time);
-        time = setTimeout(quit, 5000)
-        // 1000 milliseconds = 1 second
-    }
-};
-*/
