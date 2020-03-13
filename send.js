@@ -2,13 +2,20 @@ const express = require('express');
 const bodyParser= require('body-parser');
 const app = express();
 const path = require('path');
+const os = require('os');
 
 const main = require('./main.js');
 var server;
 
 app.use(bodyParser.urlencoded({extended: true}))
+app.head('/airwave', function(req,res) {
+    res.setHeader("airwave", "Receive from PC");
+    res.setHeader("hostname", os.hostname().replace(/[":,{}\s]+/g, ''))
+    res.send("I see you snooping around.");
+  })
 
 function startSend(filedata, port) {
+    
     var names = filedata[0];
     var paths = filedata[1];
     app.get('/filedata', function(req, res) {

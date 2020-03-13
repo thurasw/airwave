@@ -37,7 +37,7 @@ document.getElementById('frontIp').innerHTML = frontIp;
 document.getElementById('backIp').innerHTML = backIp;
 
 function createHotspot() {
-    ipc.send('hotspotOn', {});
+    ipc.send('hotspotOn', 'receive');
     document.getElementById('ip').style.display = 'none';
     wifiText.style.display = 'none';
     document.getElementById('qr').style.display = 'block';

@@ -34,30 +34,36 @@ var storage = multer.diskStorage({
 var upload = multer({ 
   storage: storage,
 })
-
+var key = Math.random().toString(36).slice(2);
 function approval(req, res, next) {
-  var notifier = new WindowsToaster()
-  notifier.notify(
-    {
-        title: req.get('hostname'),
-        message: `would like to send ${req.get('filecount')} files.`,
-        icon: path.join(__dirname, '/res/icon.ico'),
-        actions: ['Accept', 'Dismiss'],
-        wait: true
-    }
-  );
+  let clientKey = req.get('key').replace(/\s/g,'');
+  if (clientKey == key.replace(/\s/g,'')) {
+    next();
+  }
+  else {
+    var notifier = new WindowsToaster()
+    notifier.notify({
+          title: req.get('hostname'),
+          message: `would like to send ${req.get('filecount')} file(s).`,
+          icon: path.join(__dirname, '/res/icon.ico'),
+          actions: ['Accept', 'Dismiss'],
+          wait: true
+      });
 
-  notifier.on('activate', () => {
-    main.receiveBtn();
-    setTimeout(next,1000)
-  });
-  notifier.on('accept', () => {
-    main.receiveBtn();
-    setTimeout(next,1000)
-  });
-  notifier.on('dismiss', function() {
-    res.send('The transfer was cancelled!')
-  })
+    notifier.on('activate', () => {
+      key = Math.random().toString(36).slice(2);
+      main.receiveBtn();
+      setTimeout(next,1000)
+    });
+    notifier.on('accept', () => {
+      key = Math.random().toString(36).slice(2);
+      main.receiveBtn();
+      setTimeout(next,1000)
+    });
+    notifier.on('dismiss', function() {
+      res.send('The transfer was cancelled!')
+    })
+  }
 }
 
 function beforeUpload(req, res, next) {
@@ -79,10 +85,15 @@ function afterUpload(req, res, next) {
     error.httpStatusCode = 400
     return next(error)
   }
-  res.send('Success!')
+  res.send(key)
 }
 
 app.post('/uploadfile', [approval, beforeUpload, upload.single('single'), afterUpload]);
+app.head('/airwave', function(req,res) {
+  res.setHeader("airwave", "Send to PC");
+  res.setHeader("hostname", os.hostname().replace(/[":,{}\s]+/g, ''))
+  res.send("I see you snooping around.");
+})
 
 function startMulter(port)
 {

@@ -330,6 +330,11 @@ function turnOffHotspot()
 
 ipc.on('hotspotOn', function(event, data) {
     turnOnHotspot();
+    if (data == 'receive') {
+        receive.stopMulter();
+        receive.startMulter();
+    }
+
 });
 
 var receive = require('./receive.js');
@@ -351,6 +356,7 @@ exports.receiveBtn = receiveBtn;
 ipc.on('receiveBtn', receiveBtn);
 
 ipc.on('cancelRcv', function(event, data) {
+    turnOffHotspot();
     receive.stopMulter();
     receive.startMulter(portNumber);
 });
