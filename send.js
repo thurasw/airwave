@@ -18,8 +18,9 @@ function startSend(filedata, port) {
     
     var names = filedata[0];
     var paths = filedata[1];
+    app.locals.filedata = names;
     app.get('/filedata', function(req, res) {
-        res.send(names);
+        res.send(app.locals.filedata);
         var hostname = req.get('hostname');
         main.startSending([names.length, hostname]);
     });
