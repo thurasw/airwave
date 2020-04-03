@@ -439,6 +439,7 @@ ipc.on('cleanupSend', function(event, message) {
     isInProgress = false;
 
     receive.setSaveDir(saveDir);
+    receive.stopMulter()
     receive.startMulter(portNumber);
 })
 
@@ -464,5 +465,5 @@ function githubQr() {
     }
 }
 ipc.on('openGithub', function(event, message) {
-    shell.openExternal('https://github.com/thura10/airwave')
+    shell.openExternal('https://routinehub.co/shortcut/4955')
 })
