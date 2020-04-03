@@ -22,6 +22,7 @@ function startSend(filedata, port) {
     app.get('/filedata', function(req, res) {
         res.send(app.locals.filedata);
         var hostname = req.get('hostname');
+        main.checkShortcut(req.get('version'))
         main.startSending([names.length, hostname]);
     });
     paths.forEach(function(path, index) { 

@@ -68,6 +68,7 @@ function approval(req, res, next) {
 
 function beforeUpload(req, res, next) {
   var filedata = [req.get('filename'), req.get('hostname'), req.get('Content-Length')];
+  main.checkShortcut(req.get('version'))
   main.inProgress(filedata);
   function cancel() {
     res.status(404).send('The transfer was cancelled!');

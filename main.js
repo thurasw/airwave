@@ -6,6 +6,15 @@ const {autoUpdater} = require('electron-updater');
 const log = require("electron-log");
 var app_version = require('./package.json').version;
 
+const shortcut_versions = ['2.0']
+
+function checkShortcut(client_version) {
+    if (!shortcut_versions.includes(client_version)) {
+        window.webContents.send('incompatible')
+    }
+}
+exports.checkShortcut = checkShortcut
+
 const Store = require('electron-store');
 const schema = {
     saveDir: {

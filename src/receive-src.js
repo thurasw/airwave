@@ -36,6 +36,10 @@ else {
 document.getElementById('frontIp').innerHTML = frontIp;
 document.getElementById('backIp').innerHTML = backIp;
 
+ipc.on('incompatible', () => {
+    alert('The shortcut on your phone is incompatible with the current version of airwave. Please update both to the latest versions.')
+})
+
 function createHotspot() {
     ipc.send('hotspotOn', 'receive');
     document.getElementById('ip').style.display = 'none';
