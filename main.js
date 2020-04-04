@@ -6,7 +6,7 @@ const {autoUpdater} = require('electron-updater');
 const log = require("electron-log");
 var app_version = require('./package.json').version;
 
-const shortcut_versions = ['2.0']
+const shortcut_versions = ['2.0', '2.1']
 
 function checkShortcut(client_version) {
     if (!shortcut_versions.includes(client_version)) {
@@ -42,10 +42,14 @@ const schema = {
         maximum: 65535,
 		minimum: 1,
 		default: 3000
+    },
+    secretKey: {
+        type: 'string',
+        default: 'unconfigured'
     }
 };
 const store = new Store({schema});
-var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate'), store.get('port')]
+var config = [store.get('saveDir'), store.get('legacy'), store.get('ssid'), store.get('password'), store.get('checkForUpdate'), store.get('port'), store.get('secretKey')]
 ipc.on('reqConfig', function(event) {
     window.webContents.send('config', config);
 })
@@ -57,6 +61,7 @@ ipc.on('configSaved', function(event, newConfig) {
     store.set('password', newConfig[3]);
     store.set('checkForUpdate', newConfig[4]);
     store.set('port', newConfig[5]);
+    store.set('secretKey', newConfig[6])
     isInProgress = false;
     app.relaunch();
     generateQr(app.quit)
@@ -68,6 +73,8 @@ var ssid = store.get('ssid');
 var password = store.get('password');
 var autoUpdateSetting = store.get('checkForUpdate');
 var portNumber = store.get('port');
+var secretKey = store.get('secretKey');
+exports.secretKey = secretKey;
 
 var manualCheckForUpdate = false;
 var isInProgress = false;

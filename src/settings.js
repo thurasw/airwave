@@ -7,7 +7,8 @@ var userLegacy = document.getElementById('legacy');
 var userSsid = document.getElementById('ssid');
 var userPassword = document.getElementById('password');
 var userCheckForUpdate = document.getElementById('checkForUpdate');
-var port = document.getElementById('port')
+var port = document.getElementById('port');
+var secretKey = document.getElementById('secretKey')
 
 var config = [];
 ipc.send('reqConfig', {});
@@ -23,7 +24,8 @@ ipc.on('config', function(event, reqConfig) {
     if (config[4] == false) {
         userCheckForUpdate.selectedIndex = 1;
     }
-    port.setAttribute('value', reqConfig[5])
+    port.setAttribute('value', reqConfig[5]);
+    secretKey.setAttribute('value', reqConfig[6])
 })
 
 //When user chooses save location, open folder dialog and update text.
@@ -66,12 +68,13 @@ saveBtn.addEventListener('click', function(event) {
     }
     if (port.value < 65535 && port.value > 1) {
         newConfig.push(parseInt(port.value));
-        ipc.send('configSaved', newConfig);
     }
     else {
         alert('Please enter a valid port number between 1 and 65535');
         return
     }
+    newConfig.push(secretKey.value)
+    ipc.send('configSaved', newConfig);
 })
 
 function openSaveDir() {

@@ -34,12 +34,27 @@ var storage = multer.diskStorage({
 var upload = multer({ 
   storage: storage,
 })
+
 var key = Math.random().toString(36).slice(2);
+var secretKey = main.secretKey;
+
 function approval(req, res, next) {
+
+  const goToNext = () => {
+    key = Math.random().toString(36).slice(2);
+    main.receiveBtn();
+    setTimeout(next,1000)
+  }
+
   let clientKey = req.get('key').replace(/\s/g,'');
   if (clientKey == key.replace(/\s/g,'')) {
-    next();
+    goToNext();
   }
+
+  else if (clientKey == secretKey.replace(/\s/g,'') && secretKey != "unconfigured") {
+    goToNext();
+  }
+
   else {
     var notifier = new WindowsToaster()
     notifier.notify({
@@ -50,16 +65,8 @@ function approval(req, res, next) {
           wait: true
       });
 
-    notifier.on('activate', () => {
-      key = Math.random().toString(36).slice(2);
-      main.receiveBtn();
-      setTimeout(next,1000)
-    });
-    notifier.on('accept', () => {
-      key = Math.random().toString(36).slice(2);
-      main.receiveBtn();
-      setTimeout(next,1000)
-    });
+    notifier.on('activate', goToNext);
+    notifier.on('accept', goToNext);
     notifier.on('dismiss', function() {
       res.send('The transfer was cancelled!')
     })
