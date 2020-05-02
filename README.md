@@ -23,6 +23,8 @@ This will share the internet from your main WiFi to the hotspot wifi and your ph
 To-do:\
 Show percentage of file being uploaded\
 
+Old Shorcuts:
+
 [Send - Over LAN](https://www.icloud.com/shortcuts/0a71151411274384977d6a636075cbd0)  
 [Receive - Over LAN](https://www.icloud.com/shortcuts/7459e65af6854bdcac10ef7f79f7f25a)  
 [Send - Using Hotspot](https://www.icloud.com/shortcuts/8cc6185536944118854a67e5eb833b42)  
