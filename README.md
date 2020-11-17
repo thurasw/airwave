@@ -1,4 +1,7 @@
 # airwave
+
+*Not working on iOS 14
+
 Share Files between iOS and Windows without hassle.
 
 Airwave is a simple electron app to transfer files between iOS and Windows. It is made as simple as I could. It uses node.js, electron, express and multer to handle all this.
