@@ -4,7 +4,6 @@
 Share Files between iOS and Windows without hassle.
 
 Airwave is a simple electron app to transfer files between iOS and Windows. It is made as simple as I could. It uses node.js, electron, express and multer to handle all this.
-[Feel free to donate. I won't cry about it.](https://paypal.me/thurasw)
 
 Download the shortcut:  [Airwave](https://routinehub.co/shortcut/4955)
 
@@ -18,12 +17,7 @@ If you don't get the prompt, you will have to go into Windows Firewall settings 
 2. iOS is pretty hesitant to connect to wifi networks without an internet connection so you might wanna go to Control Panel -> Network and Internet -> Network and Sharing Center -> Change adapter settings -> (Your actual Wifi Adapter **not hosted network**) -> Properties -> Sharing -> Allow other network users to connect through ...
 This will share the internet from your main WiFi to the hotspot wifi and your phone will connect to the hotspot 2x 3x quicker. (This option is only available after you turn the hotspot on.)
 
-3. This app is made using dark magic and you have to donate before you can use. I know. Very magical. [Here ;)](https://paypal.me/thurasw) (jk)
-
-4. On a real note, it's very self-explanatory. Very user-friendly.
-
-To-do:\
-Show percentage of file being uploaded\
+3. Everything else is self-explanatory.
 
 Old Shorcuts:
 
