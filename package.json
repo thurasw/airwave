@@ -59,7 +59,7 @@
     "uuid": "^7.0.2"
   },
   "devDependencies": {
-    "electron": "7.1.2",
+    "electron": "9.1.0",
     "electron-builder": "^21.2.0",
     "electron-reload": "^1.5.0"
   }
